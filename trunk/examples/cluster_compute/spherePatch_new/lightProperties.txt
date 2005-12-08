@@ -1,0 +1,5 @@
+lightName	spectrumType	lightType
+leftcenter_light	D65	area
+leftfront_light	D65	area
+rightcenter_light	D65	area
+rightfront_light	D65	area

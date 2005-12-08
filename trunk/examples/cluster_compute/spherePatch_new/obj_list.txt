@@ -1,0 +1,12 @@
+backwall.obj
+checkerblack.obj
+checkerwhite.obj
+leftcenter_light.rad
+leftfront_light.rad
+patch.obj
+rightcenter_light.rad
+rightfront_light.rad
+roomleft.obj
+roomright.obj
+sphere.obj
+tableleft.obj
