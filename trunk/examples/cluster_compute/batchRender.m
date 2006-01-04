@@ -1,11 +1,13 @@
 % new batchRender file
-% 11/27/05 dpl wrote it. based on bx's batchRender
+%11/27/05 dpl wrote it. based on bx's batchRender
+%12/28/05 dpl modified to link objectProperties, lightProperties and
+%conditions within this file.
 
 %assumptions about conditions and object files:
 % *first field in each condition is sceneName
 % *in objectProperties, if a c_ preceeds the value it's value is looked up
 %in conditions. the script searches for a field name corresponding to the
-%value it fi=nds in objectProperties, not including the prdeceeding 'c_'
+%value it finds in objectProperties, not including the prdeceeding 'c_'
 % *if a value is not a string, it assumes its a number, and converts it into
 %a string
 
@@ -14,7 +16,7 @@ display(['running at ' datestr(now)]);
 
 
 %set which experiment we're doing
-experimentName='spherePatch_new';
+experimentName='singleSphere_new';
 cd(experimentName);
 
 %**(this can be made flexible sometime if we want)
@@ -95,9 +97,6 @@ end
     
 %render the scene
 for currentCondition=1:numConditions
-    RenderRoom(currentCondition,conditions(currentCondition),objectProperties, lightProperties);
-    %**(this is for now, because of directory dependencies of these
-    %functions)
-    %cd('..');
-    %**(add logging like bei's script did)
+    RenderRoom_new(currentCondition,conditions(currentCondition),objectProperties, lightProperties);
+
 end

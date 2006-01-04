@@ -1,3 +1,3 @@
 sceneName	imageRes	wavelengthsStart	wavelengthsStep	wavelengthsNumSteps	rifDir	whichImage	coneImagesDirectory	lightPower	glossyness	roughness	patch_spectrumNumber	sphere_spectrumNumber	table_ spectrumNumber	checkerblack_spectrumNumber	checkerwhite_spectrumNumber
-conl_gre60_l	100	400	100	3	rifDir	left	coneImages	7	0.0737	0.01	2	4	21	24	19
-conl_gre60_r	100	400	100	3	rifDir	right	coneImages	7	0.0737	0.01	2	4	21	24	19
+conl_gre60_l	10	400	100	3	rifDir	left	coneImages	7	0.0737	0.01	2	4	21	24	19
+conl_gre60_r	10	400	100	3	rifDir	right	coneImages	7	0.0737	0.01	2	4	21	24	19

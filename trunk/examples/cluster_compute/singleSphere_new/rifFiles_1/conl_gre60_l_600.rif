@@ -1,11 +1,11 @@
 OCTREE = conl_gre60_l_600.oct
 ZONE = Interior 0 40.1 0 25.5 0 19.4
 EXPOSURE = 1.0
-materials = materials_1/obj_material_600.rad 
-scene = lights_1/leftcenter_light.rad lights_1/leftfront_light.rad lights_1/rightcenter_light.rad lights_1/rightfront_light.rad objects_1/backwall.obj.rad objects_1/checkerblack.obj.rad objects_1/checkerwhite.obj.rad objects_1/l_sphere.rad.rad objects_1/roomleft.obj.rad objects_1/roomright.obj.rad objects_1/tableleft.obj.rad 
+materials = materials_1/obj_material_600.rad
+scene = objects_1/backwall.obj.rad objects_1/checkerblack.obj.rad objects_1/checkerwhite.obj.rad objects_1/roomleft.obj.rad objects_1/roomright.obj.rad objects_1/sphere.obj.rad objects_1/tableleft.obj.rad lights_1/leftcenter_light.rad lights_1/leftfront_light.rad lights_1/rightcenter_light.rad lights_1/rightfront_light.rad 
 UP = Z
-view = -vf view_right_01.vf
-RESOLUTION = 1
+view = -vf  view_left_01.vf
+RESOLUTION = 100
 QUALITY = Medium
 PENUMBRAS = True
 PICTURE = conl_gre60_l_600

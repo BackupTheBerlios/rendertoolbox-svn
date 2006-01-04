@@ -1,0 +1,31 @@
+function Render_RadMaterialWard(currentObjectMaterialParams,wls,dirName)
+%Render_RadMaterialWard(mat,object_name,dirName)
+%
+%Take a material structure generated earlier in RenderRoom and write it
+%into a .rad file that radiance can read.
+%
+%12/25/05 dpl wrote it. based on bx's RenStructToMaterial
+
+
+
+% Get number of wavelengths
+wavelength_count = length(wls);
+
+
+rho = num2str(currentObjectMaterialParams.rho);
+alpha = num2str(currentObjectMaterialParams.alpha);
+
+output = ['void plastic ',currentObjectMaterialParams.name];
+output = [output,char(10),'0',char(10),'0',char(10),'5 '];
+
+for currentWavelength=1:wavelength_count;
+    cd(dirName);
+    wavelength = wls(currentWavelength)
+    spectrum = num2str(mat.spectrum(i));
+    out_name = [currentWavelength.name,'_',currentWavelength.type,'_',wavelength,'.rad'];
+    fid = fopen(out_name,'w');
+    new_output = [output,spectrum,' ',spectrum,' ',spectrum,' ',rho,' ',alpha,char(10)];
+    count = fprintf(fid,'%s',new_output);
+    fclose(fid);
+
+end

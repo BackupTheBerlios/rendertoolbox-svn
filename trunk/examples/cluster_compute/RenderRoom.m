@@ -142,7 +142,7 @@ S_cones = S_cones_ss2;
 
 fprintf('convert all of the objects to Radiance format\n');
 % Convert all of the objects to Radiance format.
-    RenObjToRad(objDir,whichCondition); 
+RenObjToRad(objDir,whichCondition); 
 
 % Now we make materials folder
 dirName = sprintf('%s_%d','materials',whichCondition);
