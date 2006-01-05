@@ -68,9 +68,9 @@ for i = 1:obj_count;
          cmd = char(strcat('obj2rad',{' '},objDir,'/',obj_names(i),strcat({' '},'> ',{' '},outputObjDir,'/'),obj_names(i),'.rad')); 
         %cmd = char(strcat('cp',{' '},objDir,'/',obj_names(i),{' '},outputObjDir,'/', obj_names(i)));
          %cmd = char(strcat('cp',{' '},objDir,'/',obj_names(i),' objects','_',int2str(whichCondition), '/',obj_names(i)));
-      elseif (plane == 1)
+      %elseif (plane == 1)
         %cmd = char(strcat('cp',{' '},objDir,'/',obj_names(i),{' '},outputObjDir,'/', obj_names(i))); 
-        cmd = char(strcat('cp',{' '},objDir,'/',obj_names(i),' objects','_',int2str(whichCondition), '/',obj_names(i)));
+        %cmd = char(strcat('cp',{' '},objDir,'/',obj_names(i),' objects','_',int2str(whichCondition), '/',obj_names(i)));
       else  
         cmd = char(strcat('obj2rad',{' '},objDir,'/',obj_names(i),strcat({' '},'> ',{' '},outputObjDir,'/'),obj_names(i),'.rad'));  
         %cmd = char(strcat('obj2rad',{' '},objDir,'/',obj_names(i),{' > objects/'},obj_names(i),'.rad'));  
