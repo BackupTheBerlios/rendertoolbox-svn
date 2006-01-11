@@ -51,7 +51,6 @@ for i=1:numObjects
 end
 cd ..;
 
-    
 
 %read from lights file
 lightProperties=ReadStructsFromText('lightProperties.txt');
@@ -93,10 +92,21 @@ for i=1:length(requirements)
         return;
     end
 end
-    
-    
+
+
+   
 %render the scene
-for currentCondition=1:numConditions
-    RenderRoom_new(currentCondition,conditions(currentCondition),objectProperties, lightProperties);
+for currentConditionNum=1:numConditions
+    %link the objectProperties and lightProperties to condition dependant
+    %parameters stored in the conditions files in order to pass them to
+    %RenderRoom
+    [objectMaterialParams lightMaterialParams currentConditions] = ...
+        Render_ProcessMaterialProps(objectProperties,lightProperties,conditions(currentConditionNum),objectDirectory);
+    %add objectDirectory
+    %**(can put this into the above function)
+    currentConditions.objectDirectory=objectDirectory;
+    %note: we must be in the experiment directory for this function to
+    %work.
+    RenderRoom_new(currentConditions,currentConditionNum,objectMaterialParams,lightMaterialParams);
 
 end

@@ -1,4 +1,4 @@
-function  RenderRoom_new(currentConditionNumber,currentConditions,objectProperties,lightProperties)
+function  RenderRoom_new(currentConditions,currentConditionNumber,objectMaterialParams,lightMaterialParams)
 %parameters:
 %   currentConditionNumber-the number of the current condition, which 
 %is assigned in batchRender. starts from 1 and counts upwards. this is not
@@ -9,37 +9,13 @@ function  RenderRoom_new(currentConditionNumber,currentConditions,objectProperti
 %   objectProperties-struct read from objectProperties file
 %   lightProperties-struct read from lightProperties file
 %
+%note: matlab must be in the experiment directory for RenderRoom to work
+%
 %11/27/05 dpl wrote it. based on bx's RenderRoom
 %12/24/05 dpl modifying later portions to clarfiy the code and make it more
 %               general
+%1/11/06 dpl put Render_ProcessMaterialProps into batchRender
 
-%program constants
-objectDirectory='scene_objects';
-previousDirectory=pwd;
-
-
-%link objectProperties, lightProperties and currentConditions
-[objectMaterialParams lightMaterialParams currentConditions] = ...
-     Render_ProcessMaterialProps(objectProperties,lightProperties,currentConditions,objectDirectory);
-
-
-
-
-
-
-
-%object directory
-%**(this is hardcoded for now. can put into one of the text files to make it
-%flexible with each project or each condition. could even put it in the
-%objects text file so that objects wouldnt' have to be stored in the
-%same place. but for now, leave it here.)
-objectDirectory='scene_objects';
-previousDirectory=pwd;
-cd(objectDirectory);
-
-
-%put us in the right place to start Bei's code
-cd(previousDirectory);
 
 
 %convert objects and lights into radiance files and sort into
@@ -73,7 +49,8 @@ Render_RenderScene(currentConditions);
 
 
 
-
+%don't do the rest for now
+return;
 
 %bei's code is below here now:
 %with these conversions.
