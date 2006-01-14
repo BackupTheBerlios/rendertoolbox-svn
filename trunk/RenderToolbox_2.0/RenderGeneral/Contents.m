@@ -1,1 +1,0 @@
-% RenderToolbox:RenderGeneral% Version 0.5% % RenRenderMaster           - Script to take Maya output and create a rendered image.
