@@ -1,3 +1,0 @@
-sceneName	imageRes	rifDir	whichImage	coneImagesDirectory	lightPower	glossiness	roughness	patch_spectrumNumber	sphere_spectrumNumber	table_ spectrumNumber	checkerblack_spectrumNumber	checkerwhite_spectrumNumber
-conl_gre60_l	800	rifDir	left	coneImages	7	glossyness1	roughness1	psn1	spn1	tsn1	cbsn1	cwsn1
-conl_gre60_r	800	rifDir	right	coneImages	7	glossyness2	roughness2	psn2	spn2	tsn2	cbsn2	cwsn2

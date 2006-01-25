@@ -1,4 +1,4 @@
-function Render_SceneObjectsToRad(objectMaterialParams,lightMaterialParams,currentConditionNumber)
+function Render_SceneObjectsToRad(objectMaterialParams,lightMaterialParams,currentConditions)
 %converts objects in scene_objects directory into radiance files and
 %and sorts into objects and lights folders:
 %*objects that are not lights are converted to rad files using the binary application
@@ -20,14 +20,19 @@ function Render_SceneObjectsToRad(objectMaterialParams,lightMaterialParams,curre
 %
 %12/24/05 dpl wrote it. based on bx's RenObjToRad
 
-sourceDirectory='scene_objects';
+%get condition number
+currentConditionNumber=currentConditions.currentConditionNumber;
+
+%get directory information
+sourceDirectory=currentConditions.sourceDirectory;
+tempDirectory=currentConditions.tempDirectory;
 
 %get some stats
 numObjects=length(objectMaterialParams);
 numLights=length(lightMaterialParams);
 
 %see if there is an object directory of the right name.
-destinationDirectory=['objects_' num2str(currentConditionNumber)];
+destinationDirectory=[tempDirectory '/' 'objects_' num2str(currentConditionNumber)];
 if (~exist(destinationDirectory,'dir') )
     mkdir(destinationDirectory);
 end
@@ -40,7 +45,7 @@ for currentObject=1:numObjects
 end
     
 %see if there is a light directory of the right name.
-destinationDirectory=['lights_' num2str(currentConditionNumber)];
+destinationDirectory=[tempDirectory '/' 'lights_' num2str(currentConditionNumber)];
 if (~exist(destinationDirectory,'dir') )
     mkdir(destinationDirectory);
 end

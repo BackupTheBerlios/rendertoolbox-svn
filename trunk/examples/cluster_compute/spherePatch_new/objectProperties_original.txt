@@ -1,9 +1,0 @@
-objectName	glossyness	roughness	spectrumNumber	spectrumType
-backwall	0	0	24	surfaceList
-checkerblack	.05	.05	c_checkerblack_spectrumNumber	surfaceList
-checkerwhite	.05	.05	c_checkerwhite_spectrumNumber	surfaceList
-patch	c_glossyness	c_roughness	c_patch_spectrumNumber	uvTable
-roomleft	0	0	20	surfaceList
-roomright	0	0	20	surfaceList
-sphere	c_glossyness	c_roughness	c_sphere_spectrumNumber	uvTable
-tableleft	0	0	c_table_spectrumNumber	surfaceList

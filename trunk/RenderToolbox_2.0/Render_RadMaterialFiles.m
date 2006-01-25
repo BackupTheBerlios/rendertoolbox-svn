@@ -1,9 +1,17 @@
-function dirName=Render_RadMaterialFiles(objectMaterialParams,lightMaterialParams,currentConditions,currentConditionNumber)
+function dirName=Render_RadMaterialFiles(objectMaterialParams,lightMaterialParams,currentConditions)
 %makes material files for radiance based on parameters that were read above
 %in RenderRoom. saves them in materials_[condition#] in the experiment
 %directory.
 %
 %12/25/05 dpl wrote it. based on bx's RenStructToMaterial and RenCatRad
+%1/19/06  dpl changed to use tempDirectory
+
+%get condition number
+currentConditionNumber=currentConditions.currentConditionNumber;
+
+%get directory information
+sourceDirectory=currentConditions.sourceDirectory;
+tempDirectory=currentConditions.tempDirectory;
 
 %some stats
 numObjects=length(objectMaterialParams);
@@ -11,11 +19,10 @@ numLights=length(lightMaterialParams);
 
 
 %see if materials folder exists, if not, make it.
-dirName = sprintf('%s_%d','materials',currentConditionNumber);
+dirName = [tempDirectory '/' 'materials_' num2str(currentConditionNumber)];
 if (~exist(dirName,'dir') )
     mkdir(dirName);
 end
-cd(dirName); unix('rm *.rad'); cd ..;
 
 %do objects
 for currentObject=1:numObjects
@@ -35,6 +42,7 @@ for currentLight=1:numLights
         case 'spot'
             %**(not tested because I don't have an experiment with a spot
             %light source.)
+            %**(NOTE::need to update this to work with temp directory)
             name=lightMaterialParams(currentLight).name;
             RenStructToMaterial(lightMaterialParams(currentLight),name,dirName);
         otherwise
@@ -45,17 +53,18 @@ end
 
 %cat files together
 %**(taken directly from bx's RenCatRad)
+%**(now modified to use temp directory)
 numWavelengths=length(currentConditions.wls);
 for i = 1:numWavelengths;
         currentWavelength = int2str(currentConditions.wls(i));
-        cd(dirName);
+%         cd(dirName);
         filename = 'obj_material';
-        out_name = [filename,'_',currentWavelength,'.rad'];
+        out_name = [dirName '/' filename,'_',currentWavelength,'.rad']; %dpl: modified this line to include temp dir
         fid = fopen(out_name,'w');
-        [a,b] = unix(['cat *_',currentWavelength,'.rad']);
+        [a,b] = unix(['cat ' dirName '/' '*_',currentWavelength,'.rad']);
         new_output = b;
         count = fprintf(fid,'%s',new_output);
         fclose(fid);
-        cd ..
+%         cd ..
 end
 
