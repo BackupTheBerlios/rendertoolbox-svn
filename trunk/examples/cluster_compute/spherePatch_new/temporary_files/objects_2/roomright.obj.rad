@@ -1,0 +1,69 @@
+# obj2rad scene_objects/roomright.obj
+# This file uses centimeters as units for non-parametric coordinates.
+
+roomright polygon roomright_object.walls.1
+0
+0
+9
+           0.12998          48.637729          31.192721
+          21.12998          48.637729          31.192721
+          21.12998          48.637729         -24.807279
+
+roomright polygon roomright_object.walls.1
+0
+0
+9
+          21.12998          48.637729         -24.807279
+           0.12998          48.637729         -24.807279
+           0.12998          48.637729          31.192721
+
+roomright polygon roomright_object.walls.2
+0
+0
+9
+           0.12998          48.637729         -24.807279
+          21.12998          48.637729         -24.807279
+          21.12998          10.915127         -24.807279
+
+roomright polygon roomright_object.walls.2
+0
+0
+9
+          21.12998          10.915127         -24.807279
+           0.12998          10.915127         -24.807279
+           0.12998          48.637729         -24.807279
+
+roomright polygon roomright_object.walls.3
+0
+0
+9
+           0.12998          10.915127         -24.807279
+          21.12998          10.915127         -24.807279
+          21.12998          10.915127          31.192721
+
+roomright polygon roomright_object.walls.3
+0
+0
+9
+          21.12998          10.915127          31.192721
+           0.12998          10.915127          31.192721
+           0.12998          10.915127         -24.807279
+
+roomright polygon roomright_object.walls.4
+0
+0
+9
+          21.12998          10.915127          31.192721
+          21.12998          10.915127         -24.807279
+          21.12998          48.637729         -24.807279
+
+roomright polygon roomright_object.walls.4
+0
+0
+9
+          21.12998          48.637729         -24.807279
+          21.12998          48.637729          31.192721
+          21.12998          10.915127          31.192721
+
+# Done processing file: scene_objects/roomright.obj
+# 46 lines, 45 statements, 2 unrecognized
