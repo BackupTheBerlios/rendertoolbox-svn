@@ -20,19 +20,17 @@ function Render_SceneObjectsToRad(objectMaterialParams,lightMaterialParams,curre
 %
 %12/24/05 dpl wrote it. based on bx's RenObjToRad
 
-%get condition number
+%get some stuff from the conditions
 currentConditionNumber=currentConditions.currentConditionNumber;
-
-%get directory information
-sourceDirectory=currentConditions.sourceDirectory;
-tempDirectory=currentConditions.tempDirectory;
+objectDirectory=currentConditions.objectDirectory;
+temporaryDirectory=currentConditions.temporaryDirectory;
 
 %get some stats
 numObjects=length(objectMaterialParams);
 numLights=length(lightMaterialParams);
 
 %see if there is an object directory of the right name.
-destinationDirectory=[tempDirectory '/' 'objects_' num2str(currentConditionNumber)];
+destinationDirectory=[temporaryDirectory '/' 'objects_' num2str(currentConditionNumber)];
 if (~exist(destinationDirectory,'dir') )
     mkdir(destinationDirectory);
 end
@@ -40,12 +38,12 @@ end
 %now convert object files
 for currentObject=1:numObjects
     currentObjectName=objectMaterialParams(currentObject).name;
-    cmd=['obj2rad ' sourceDirectory '/' currentObjectName '.obj > ' destinationDirectory '/' currentObjectName '.obj.rad'];
+    cmd=['obj2rad ' objectDirectory '/' currentObjectName '.obj > ' destinationDirectory '/' currentObjectName '.obj.rad'];
     unix(cmd);
 end
     
 %see if there is a light directory of the right name.
-destinationDirectory=[tempDirectory '/' 'lights_' num2str(currentConditionNumber)];
+destinationDirectory=[temporaryDirectory '/' 'lights_' num2str(currentConditionNumber)];
 if (~exist(destinationDirectory,'dir') )
     mkdir(destinationDirectory);
 end
@@ -55,6 +53,6 @@ end
 %case so far)
 for currentLight=1:numLights
     currentLightName=lightMaterialParams(currentLight).name;
-    cmd=['cp ' sourceDirectory '/' currentLightName '.rad ' destinationDirectory '/' currentLightName '.rad'];
+    cmd=['cp ' objectDirectory '/' currentLightName '.rad ' destinationDirectory '/' currentLightName '.rad'];
     unix(cmd);
 end

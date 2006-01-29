@@ -1,27 +1,15 @@
-function RenHypMakeSimgFromPic(imageDir,wls,rif_struct,picMat)
-% function RenHypMakeSimgFromPic(imageDir,wls,rif_struct,picMat)
+function Render_MakeSimg(currentConditions)
 %
-% Create a simulator file from hyperspectral data created by Radiance.
-% 31 .mat files are supposed to be accessible and be radiometric images of the scene.
-% Thus the factors are all set to 1.0 in the hyperimage file.
-% 
-% Data files are named prefixnumber.mat, and output file will be prefix.Simg
-%
-% 5/23/00   pxl     Wrote it.
-% 9/15/00   dhb     Simplified to remove unused information.
-% 2/24/04   bx,pk   Modified it.
-% 3/17/04   bx      Modified it. Change it from converting Tiff to directly
-%                   using .pic matrix from RenPicToMat.m 
-% 3/21/04   dhb, bx Get rid of read of camera structure.
+% 1/26/06 dpl wrote it. based on bx's RenMakeHypSimg
 
+%get some stuff from conditions
 imagePrefix=currentConditions.sceneName;
 wls=currentConditions.wls;
-imageDir='image_data';
+imageDirectory=currentConditions.imageDirectory;
 
-
-
-% Get the important information
-imagePrefix = rif_struct.rif_name;
+%load and the delete picture matrix
+load([imageDirectory '/picMat.mat']);
+unix(['rm ' imageDirectory '/picMat.mat']);
 
 % Define camera and read it.
 camera.manufacturer = 'n/a';
@@ -37,9 +25,7 @@ camera.comments = 'Radiance Virtual Camera';
 
 % Change to correct directory
 prevDir = pwd;
-unix(['rm -rf ' imageDir]);
-unix(['mkdir ' imageDir]);
-cd(imageDir);
+cd(imageDirectory);
 
 
 % Read in one picMat matrix

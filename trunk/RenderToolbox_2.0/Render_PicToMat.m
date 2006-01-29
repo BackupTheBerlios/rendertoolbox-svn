@@ -3,26 +3,28 @@ function [picMat] = Render_PicToMat(currentConditions)
 % 
 % 1/25/06 dpl wrote it. based on bx's RenPicToMat
 
+%get stuff from conditions, some for use in bei's code below
+temporaryDirectory=currentConditions.temporaryDirectory;
+imageDirectory=currentConditions.imageDirectory;
 wavelengths=currentConditions.wls;
 rif_name=currentConditions.sceneName;
 currentConditionNumber=currentConditions.currentConditionNumber;
 
+%check to make sure there is the image directory
+if (~exist(imageDirectory,'dir') )
+    mkdir(imageDirectory);
+end
+
 %directory names
-tempDirectory=currentConditions.tempDirectory;
 radianceOutDirName=['radOutput_' int2str(currentConditionNumber)];
-radianceOutDirPath=[tempDirectory '/' radianceOutDirName];
+radianceOutDirPath=[temporaryDirectory '/' radianceOutDirName];
 
 
 %most of the rest is bei's code:
 
 % Get the length of the wavelengths
 lim = length(wavelengths);
-% wavelengths = wls;
-% rif_struct =rs;
-% lim =1 ;
-% Loop over all wavelengths.
 picMat = cell(1,lim);
-% cd(rifDir)
 for i = 1:lim
      % Define file name and create a text version of the data in the pic
      % file.
@@ -55,3 +57,6 @@ for i = 1:lim
      % Stuff the matrix into the returned cell array
      picMat{i} = imageData;
 end
+
+%save picMat
+eval(['save ' imageDirectory '/picMat.mat picMat']); 

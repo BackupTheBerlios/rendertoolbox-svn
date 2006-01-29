@@ -1,5 +1,13 @@
-function [objectMaterialParams lightMaterialParams currentConditions] = Render_ProcessMaterialProps(objectProperties,lightProperties,currentConditions,objectDirectory)
+function [objectMaterialParams lightMaterialParams currentConditions] = ...
+    Render_ProcessMaterialProps(objectProperties,lightProperties,currentConditions)
+%
+%
+% 1/29/06 dpl took out unecessary comments and functions
 
+
+%get stuff from conditions
+objectDirectory=currentConditions.objectDirectory;
+temporaryDirectory=currentConditions.temporaryDirectory;
 
 %assume that we're in the experiment directory and the object directory is
 %in that directory
@@ -36,17 +44,6 @@ for currentObject=1:numObjects
         %map this property into the correct field of materialParam
         materialParam=Parameters_MapObjNameToField(S,materialParam,currentObject,objectProperties,name,value);
     end 
-    %now save file.
-    %**(this is assuming that there was a field called object name and there
-    %is a materialParam field corresponding to it. can check for this in
-    %the future. --upate: batchRender now checks to make sure this field
-    %is correctly placed and named)
-    %**(make this cell to use later in bei's code)
-    objectNames{currentObject}=materialParam.name;
-    save(objectNames{currentObject},'materialParam');
-
-    %**(the different name here is temporary so we can keep being
-    %compatable with bei's code below while i work on developing it)
     objectMaterialParams(currentObject)=materialParam;
     clear materialParam;
 end
@@ -86,15 +83,9 @@ for currentLight=1:numLights
     materialParam.wavelength=wls;
     %save this struct
     lightName=materialParam.name;
-    %**(for use in bei's code)
-    %objectNames{numObjects+currentLight}=lightName;
-    lightNames{currentLight}=lightName;
-    save(lightName,'materialParam');
 
-    %**(the different name here is temporary so we can keep being
-    %compatable with bei's code below while i work on developing it)
     lightMaterialParams(currentLight)=materialParam;
-    clear materialParam;
+%     clear materialParam;
 
 end
 

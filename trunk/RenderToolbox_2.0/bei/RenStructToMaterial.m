@@ -61,6 +61,8 @@ switch (mat.type)
                wavelength_count = length( mat.wavelength );
 
                for i = 1:wavelength_count; 
+                   %(dpl)adding part to make directory change work
+                   previousDir=pwd;
                    cd(dirName);
                    wavelength = int2str(mat.wavelength(i));
                    spectrum = num2str(mat.spectrum(i));
@@ -75,7 +77,7 @@ switch (mat.type)
                    new_output = [output,spectrum,' ',spectrum,' ',spectrum,' ',width,' ',xv, ' ' ,yv, ' ', zv, ' ' ,char(10)];
                    count = fprintf(fid,'%s',new_output);
                    fclose(fid);
-                   cd ..
+                   cd(previousDir);
                end
         end
     otherwise,

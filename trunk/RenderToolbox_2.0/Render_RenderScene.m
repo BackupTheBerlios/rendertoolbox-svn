@@ -7,18 +7,18 @@ function Render_RenderScene(currentConditions)
 % 12/27/05 dpl wrote it. based on bx's RenRender_rifs
 % 1/23/06  dpl changed to use temporary directory
 
-%get condition number
+%get some stuff from conditions
 currentConditionNumber=currentConditions.currentConditionNumber;
+temporaryDirectory=currentConditions.temporaryDirectory;
 
 %temp directory locations
 rifDirectoryName=['rifFiles_' int2str(currentConditionNumber)];
-tempDirectory=currentConditions.tempDirectory;
-rifDirectoryPath=[tempDirectory '/' rifDirectoryName];
+rifDirectoryPath=[temporaryDirectory '/' rifDirectoryName];
 
 
 %check to see if temp directory for radiance output exist
 radianceOutDirName=['radOutput_' int2str(currentConditionNumber)];
-radianceOutDirPath=[tempDirectory '/' radianceOutDirName];
+radianceOutDirPath=[temporaryDirectory '/' radianceOutDirName];
 if (~exist(radianceOutDirPath,'dir') )
     mkdir(radianceOutDirPath);
 end

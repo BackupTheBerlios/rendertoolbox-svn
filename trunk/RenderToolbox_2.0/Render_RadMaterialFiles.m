@@ -4,14 +4,12 @@ function dirName=Render_RadMaterialFiles(objectMaterialParams,lightMaterialParam
 %directory.
 %
 %12/25/05 dpl wrote it. based on bx's RenStructToMaterial and RenCatRad
-%1/19/06  dpl changed to use tempDirectory
+%1/19/06  dpl changed to use temporaryDirectory
 
-%get condition number
+%get some stuff from conditions
 currentConditionNumber=currentConditions.currentConditionNumber;
-
-%get directory information
-sourceDirectory=currentConditions.sourceDirectory;
-tempDirectory=currentConditions.tempDirectory;
+objectDirectory=currentConditions.objectDirectory;
+temporaryDirectory=currentConditions.temporaryDirectory;
 
 %some stats
 numObjects=length(objectMaterialParams);
@@ -19,7 +17,7 @@ numLights=length(lightMaterialParams);
 
 
 %see if materials folder exists, if not, make it.
-dirName = [tempDirectory '/' 'materials_' num2str(currentConditionNumber)];
+dirName = [temporaryDirectory '/' 'materials_' num2str(currentConditionNumber)];
 if (~exist(dirName,'dir') )
     mkdir(dirName);
 end
@@ -57,7 +55,6 @@ end
 numWavelengths=length(currentConditions.wls);
 for i = 1:numWavelengths;
         currentWavelength = int2str(currentConditions.wls(i));
-%         cd(dirName);
         filename = 'obj_material';
         out_name = [dirName '/' filename,'_',currentWavelength,'.rad']; %dpl: modified this line to include temp dir
         fid = fopen(out_name,'w');
@@ -65,6 +62,5 @@ for i = 1:numWavelengths;
         new_output = b;
         count = fprintf(fid,'%s',new_output);
         fclose(fid);
-%         cd ..
 end
 
