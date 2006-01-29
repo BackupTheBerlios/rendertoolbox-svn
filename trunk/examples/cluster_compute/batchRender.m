@@ -27,8 +27,12 @@ cd(experimentName);
 %remove previous temporary files
 unix('rm -rf temporary_files');
 
+%set directory locations
 %**(this can be made flexible sometime if we want)
 objectDirectory='scene_objects';
+imageDirectory='image_data';
+coneImageDirectory='cone_image_data';
+temporaryDirectory='temporary_files';
 
 %read from object file
 objectProperties=ReadStructsFromText('objectProperties.txt');
@@ -88,34 +92,38 @@ end
 cd ..;
 
 %read from conditions file
-conditions=ReadStructsFromText('conditions.txt');
-numConditions=length(conditions);
+allConditions=ReadStructsFromText('conditions.txt');
+numConditions=length(allConditions);
 
 %check to make sure we have required fields in conditions file
 requirements={'sceneName','imageRes','wavelengthsStart','wavelengthsStep', ...
     'wavelengthsNumSteps','rifDir','coneImagesDirectory','lightPower'};
 for i=1:length(requirements)
-    if ~isfield(conditions,requirements{i})
+    if ~isfield(allConditions,requirements{i})
         error(['ERROR. conditions file missing required conditions ' requirements{i}]);
         return;
     end
 end
 
-
+%add stuff to conditions file
+for currentConditionNumber=1:numConditions
+    allConditions(currentConditionNumber).objectDirectory=objectDirectory;
+    allConditions(currentConditionNumber).imageDirectory=imageDirectory;
+    allConditions(currentConditionNumber).coneImageDirectory=coneImageDirectory;
+    allConditions(currentConditionNumber).temporaryDirectory=temporaryDirectory;
+    allConditions(currentConditionNumber).currentConditionNumber=currentConditionNumber;
+end
    
 %render the scene
-for currentConditionNum=1:numConditions
+for currentConditionNumber=1:numConditions
     %link the objectProperties and lightProperties to condition dependant
     %parametersc stored in the conditions files in order to pass them to
     %RenderRoom
     [objectMaterialParams lightMaterialParams currentConditions] = ...
-        Render_ProcessMaterialProps(objectProperties,lightProperties,conditions(currentConditionNum),objectDirectory);
-    %add objectDirectory
-    %**(can put this into the above function)
-    currentConditions.objectDirectory=objectDirectory;
+        Render_ProcessMaterialProps(objectProperties,lightProperties,allConditions(currentConditionNumber));
     %note: we must be in the experiment directory for this function to
     %work.
-    RenderRoom(currentConditions,currentConditionNum,objectMaterialParams,lightMaterialParams);
+    RenderRoom(currentConditions,objectMaterialParams,lightMaterialParams);
 
 end
 

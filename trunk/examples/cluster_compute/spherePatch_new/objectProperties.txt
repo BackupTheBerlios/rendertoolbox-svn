@@ -1,9 +1,0 @@
-objectName	objectType	glossiness	roughness	spectrumNumber	spectrumType
-backwall	ward	0	0	24	surfaceList
-checkerblack	ward	.05	.05	c_checkerblack_spectrumNumber	surfaceList
-checkerwhite	ward	.05	.05	c_checkerwhite_spectrumNumber	surfaceList
-patch	ward	c_glossyness	c_roughness	c_patch_spectrumNumber	uvTable
-roomleft	ward	0	0	20	surfaceList
-roomright	ward	0	0	20	surfaceList
-sphere	ward	c_glossyness	c_roughness	c_sphere_spectrumNumber	uvTable
-tableleft	ward	0	0	c_table_spectrumNumber	surfaceList

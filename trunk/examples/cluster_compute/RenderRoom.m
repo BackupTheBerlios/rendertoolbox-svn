@@ -1,8 +1,5 @@
-function  RenderRoom_new(currentConditions,currentConditionNumber,objectMaterialParams,lightMaterialParams)
+function  RenderRoom(currentConditions,objectMaterialParams,lightMaterialParams)
 %parameters:
-%   currentConditionNumber-the number of the current condition, which 
-%is assigned in batchRender. starts from 1 and counts upwards. this is not
-%stored in the conditions file.
 %   currentConditions-a struct with fields corresponding to the first line
 %of the conditions file. the field values correspond to the values stored
 %for the currentCondition
@@ -16,12 +13,6 @@ function  RenderRoom_new(currentConditions,currentConditionNumber,objectMaterial
 %               general
 %1/11/06 dpl put Render_ProcessMaterialProps into batchRender
 
-%program constants--put into conditions file
-%**(can make more flexible sometime if we want. don't think it's necessary)
-currentConditions.tempDirectory='temporary_files';
-currentConditions.sourceDirectory='scene_objects';
-currentConditions.currentConditionNumber=currentConditionNumber;
-
 %convert objects and lights into radiance files and sort into
 %objects_[condition#] and lights_[condition#]
 %**(this is relacing RenObjToRad and using the parameter files
@@ -31,17 +22,11 @@ currentConditions.currentConditionNumber=currentConditionNumber;
 display('convert objects and lights into radiance files...');
 Render_SceneObjectsToRad(objectMaterialParams,lightMaterialParams,currentConditions);
 
-
 %now save material structures as rad files
 %**(replacing some code that was in RenderRoom, RenStructToMaterial and
 %RenCatRad.)
 display('save radiance material files...');
 Render_RadMaterialFiles(objectMaterialParams,lightMaterialParams,currentConditions);
-
-
-%**(leaving out RenCatObj, which only runs with more than 15 objects. The
-%code for this step seemed to be haphazardly placed before.)
-
 
 %make and write rif files for the whole scene
 display('generating and writing rif files...');
@@ -52,57 +37,14 @@ display('render the scene...');
 Render_RenderScene(currentConditions);
 
 %turn pic into mat
-picMat = Render_PicToMat(currentConditions);
+display('make picture matrix...');
+Render_PicToMat(currentConditions);
 
-
-
-%bei's code is below here now:
-%with these conversions.
-%**(this requires rif directory to be already made)
-rifFilePrefix=currentConditions.sceneName;
-rifDir=sprintf('%s_%d','rifFiles',currentConditionNumber);
-coneImageDir=currentConditions.coneImagesDirectory;
-wls=currentConditions.wls;
-if strcmp(currentConditions.whichImage,'left')
-    whichImage=1;
-else
-    whichImage=0;
-end
-
-%%%%%
-%rs = RenMake_rif_struct(scene_name,imageRes,whichImage);
-rs = RenMake_rif_struct(currentConditions.sceneName,currentConditions.imageRes,whichImage);
-%%%%%
-
-% Move the current project 's .rif, .pic.,.oct files into a subfolder.
-% rifDir = sprintf('%s_%d','rifFiles',whichCondition);
-% if (~exist(rifDir,'dir') )
-%     mkdir(rifDir);
-% end
-
-% cmd = char(strcat('mv',{' '},rifFilePrefix,'*.rif',{' '},rifDir,'/'));
-% unix(cmd);
-% cmd = char(strcat('mv',{' '},rifFilePrefix,'*.oct',{' '},rifDir,'/'));
-% unix(cmd);
-% cmd = char(strcat('mv',{' '},rifFilePrefix,'*_1.pic',{' '},rifDir,'/'));
-% unix(cmd);
-
-% Pull the floating data out of the Pic file format.
-% picMat = Render_PicToMat(wls,rs,rifDir);
-% picMat = Render_PicToMat(currentConditions);
-
-
-% Load in human cones
+%make S image and cone images
+display('generate image data...');
+Render_MakeSimg(currentConditions);
+%**(do this for now until we read cones in as conditions)
 load T_cones_ss2;
-T_cones = T_cones_ss2;
-S_cones = S_cones_ss2;
-
-
-% Use simulator toolbox to render a monitor image.  We may want to split
-% out the LMS image as a separate step at some point.
-RenHypMakeSimgFromPic('image_data',wls,rs,picMat);
-coneImage = RenMakeConeImage('image_data',coneImageDir, rs.rif_name,T_cones,S_cones);
-
-%calfile = 'StereoLeft_8';
-%RenMakeMonitorImageNew(coneImage,'image_data',rs.rif_name,calfile,T_cones,S_cones,1,0,8,0.3);    
-%RenRenderPurge;
+currentConditions.T_cones = T_cones_ss2;
+currentConditions.S_cones = S_cones_ss2;
+Render_MakeConeImage(currentConditions);
