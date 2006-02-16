@@ -1,0 +1,1 @@
+surfaceName	patchColor	patchColorName	patchLocation	tableColor	tableColorName	glossiness	roughness	floorName	floorPattern	whichImage	lightPower	coneImageDir	imageRescon1	2	yel60	center	3	g	0.05	0.02	bb	2	left	7	coneImages	800'con1	2	yel60	center	3	g	0.05	0.02	bb	2	right	7	coneImages	800'

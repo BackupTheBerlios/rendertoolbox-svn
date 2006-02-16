@@ -5,11 +5,13 @@ function Render_PathChange(version)
 %number and takes all other versions off the path
 %
 %1/12/06 dpl wrote it.
+%2/14/06 dpl fixed bug that chopped off the last path entry on each run :)
 
 %hard code paths to different versions
 %**(can make this smarter sometime)
 % versionPaths{1}=%fill in the rest of this path: '/repos/rendertoolbox/branches/RenderToolbox_1.0';
 % versionPaths{2}=%fill in the rest of this path: /repos/rendertoolbox/trunk/RenderToolbox_2.0';
+versionPaths{2}='/Users/penis/work/repos/rendertoolbox/trunk/RenderToolbox_2.0';
 
 
 
@@ -20,10 +22,10 @@ separator=pathsep;
 pathCell={};
 
 for k=1:inf
-   token = strtok(fullMatlabPath(currentPosition:end), separator);
+   token=strtok(fullMatlabPath(currentPosition:end), separator);
    pathCell{k}=token;
-   currentPosition = currentPosition + length(token) + 1;
-   if isempty(strfind(fullMatlabPath(currentPosition:end),separator)) break, end;
+   currentPosition=currentPosition+length(token)+1;
+   if(currentPosition>=length(fullMatlabPath)) break, end;
 end
 
 %remove all rendertoolboxes from the path

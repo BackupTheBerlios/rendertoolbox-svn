@@ -40,9 +40,9 @@ for currentObject=1:numObjects
     for currentObjectProperty=1:numObjectPropertyNames 
         %get the name and value of the current property for the current
         %object
-        [name value]=Parameters_GetPropVal(currentObjectProperty,currentObject,objectProperties,currentConditions);
+        [name value]=Parameters_LinkParamsConditions(currentObjectProperty,currentObject,objectProperties,currentConditions);
         %map this property into the correct field of materialParam
-        materialParam=Parameters_MapObjNameToField(S,materialParam,currentObject,objectProperties,name,value);
+        materialParam=Parameters_LookUpFieldValues(S,materialParam,currentObject,objectProperties,name,value);
     end 
     objectMaterialParams(currentObject)=materialParam;
     clear materialParam;
@@ -63,13 +63,12 @@ numLights=length(lightProperties);
 lightPropertyNames=fieldnames(lightProperties);
 numLightPropertyNames=length(lightPropertyNames);
 
-
 for currentLight=1:numLights
     materialParam=[];
     for currentLightProperty=1:numLightPropertyNames
         %get the name and value of the current property for the current
         %object
-        [name value]=Parameters_GetPropVal(currentLightProperty,currentLight,lightProperties,currentConditions);
+        [name value]=Parameters_LinkParamsConditions(currentLightProperty,currentLight,lightProperties,currentConditions);
    
         %mape name value pairs into correct fields of materialParams
         materialParam=Parameters_MapLightPropertyToField(S,materialParam,currentLight,lightProperties,currentConditions.lightPower,name,value);
@@ -83,10 +82,7 @@ for currentLight=1:numLights
     materialParam.wavelength=wls;
     %save this struct
     lightName=materialParam.name;
-
     lightMaterialParams(currentLight)=materialParam;
-%     clear materialParam;
-
 end
 
 %cd back into the directory that we started in

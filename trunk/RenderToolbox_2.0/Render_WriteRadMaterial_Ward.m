@@ -22,11 +22,9 @@ for currentWavelength=1:numWavelengths;
     wavelength=num2str(currentObjectMaterialParams.wavelength(currentWavelength));
     spectrum = num2str(currentObjectMaterialParams.spectrum(currentWavelength));
     fileName = [currentObjectMaterialParams.name,'_',currentObjectMaterialParams.type,'_',wavelength,'.rad'];
-%     cd(dirName);
     dir=[dirName '/' fileName];
     fid = fopen(dir,'w');
     fileOutput = [output,spectrum,' ',spectrum,' ',spectrum,' ',rho,' ',alpha,char(10)];
     count = fprintf(fid,'%s',fileOutput);
     fclose(fid);
-%     cd('..');
 end

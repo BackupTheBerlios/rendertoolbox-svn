@@ -10,6 +10,10 @@
 %d  *if a value is not a string, it assumes its a number, and converts it into
 %a string
 
+%DEBUG
+cd('/Users/penis/work/repos/rendertoolbox/trunk/examples/cluster_compute');
+
+
 clear all;
 display(['running at ' datestr(now)]);
 
@@ -20,8 +24,8 @@ addpath(pwd);
 versionNumber=2;
 Render_PathChange(versionNumber);
 
-%set which experiment we're doing
-experimentName='singleSphere_new';
+%set which experiment we're çdoing
+experimentName='soccer';
 cd(experimentName);
 
 %remove previous temporary files
@@ -32,10 +36,13 @@ unix('rm -rf temporary_files');
 objectDirectory='scene_objects';
 imageDirectory='image_data';
 coneImageDirectory='cone_image_data';
-temporaryDirectory='temporary_files';
+monitorImageDirectory='monitor_image_data';
+temporaryDirectory='tmp';
+viewFilesDirectory='view_files';
+
 
 %read from object file
-objectProperties=ReadStructsFromText('objectProperties.txt');
+objectProperties=Render_ReadStructsFromTabText('objectProperties.txt');
 numObjects=length(objectProperties);
 objectPropertyNames=fieldnames(objectProperties(1));
 numObjectPropertyNames=length(objectPropertyNames);
@@ -92,16 +99,39 @@ end
 cd ..;
 
 %read from conditions file
-allConditions=ReadStructsFromText('conditions.txt');
+allConditions=Render_ReadStructsFromTabText('conditions.txt');
 numConditions=length(allConditions);
 
 %check to make sure we have required fields in conditions file
-requirements={'sceneName','imageRes','wavelengthsStart','wavelengthsStep', ...
-    'wavelengthsNumSteps','rifDir','coneImagesDirectory','lightPower'};
+requirements={'sceneName','renderer','imageRes','wavelengthsStart','wavelengthsStep', ...
+    'wavelengthsNumSteps','viewFile','humanCones','tonemap','calibrationFile','lightPower'};
 for i=1:length(requirements)
     if ~isfield(allConditions,requirements{i})
         error(['ERROR. conditions file missing required conditions ' requirements{i}]);
         return;
+    end
+end
+
+%read from renderer properties file
+rendererParams=Render_ReadStructsFromTabText('rendererParams.txt');
+
+%check to make sure we have required fields
+requirements={'zone','exposure','z','quality','penumbras', ...
+    'indirect','detail','variability','report','render'};
+for i=1:length(requirements)
+    if ~isfield(rendererParams,requirements{i})
+        error(['ERROR. renderer file missing required properties ' requirements{i}]);
+        return;
+    end
+end
+
+%turn number fields into text fields
+%**(this code assumes that the requirements are the only fields in the
+%structure)
+for i=1:length(requirements)
+    if ~ischar(rendererParams.(requirements{i}))
+        rendererParams.(requirements{i})= ...
+            num2str(rendererParams.(requirements{i}));
     end
 end
 
@@ -112,19 +142,36 @@ for currentConditionNumber=1:numConditions
     allConditions(currentConditionNumber).coneImageDirectory=coneImageDirectory;
     allConditions(currentConditionNumber).temporaryDirectory=temporaryDirectory;
     allConditions(currentConditionNumber).currentConditionNumber=currentConditionNumber;
+    allConditions(currentConditionNumber).monitorImageDirectory=monitorImageDirectory;
+    allConditions(currentConditionNumber).viewFilesDirectory=viewFilesDirectory;
 end
    
 %render the scene
 for currentConditionNumber=1:numConditions
-    %link the objectProperties and lightProperties to condition dependant
-    %parametersc stored in the conditions files in order to pass them to
-    %RenderRoom
-    [objectMaterialParams lightMaterialParams currentConditions] = ...
-        Render_ProcessMaterialProps(objectProperties,lightProperties,allConditions(currentConditionNumber));
-    %note: we must be in the experiment directory for this function to
-    %work.
-    RenderRoom(currentConditions,objectMaterialParams,lightMaterialParams);
-
+%     try
+        display(['**Current condition: ' allConditions(currentConditionNumber).sceneName ...
+            ', ' datestr(now)]);
+        switch(allConditions(currentConditionNumber).renderer)
+            case 'radiance'
+                %link the objectProperties and lightProperties to condition dependant
+                %parameter stored in the conditions files in order to pass them to
+                %RenderRoom
+                [objectMaterialParams lightMaterialParams currentConditions] = ...
+                    Render_ProcessMaterialProps(objectProperties,lightProperties,allConditions(currentConditionNumber));
+                %note: we must be in the experiment directory for this function to
+                %work.
+                RenderRoom(currentConditions,objectMaterialParams,lightMaterialParams,rendererParams);
+            otherwise
+                error('Only the radiance renderer is currently supported.');
+        end
+        display(['Finished at ' datestr(now)]);
+        display(' ');
+%     catch
+%         display('Could not finish this condition for following reason:')
+%         display(lasterr);
+%         display(' ');
+%     end
+    
 end
 
 cd ..;

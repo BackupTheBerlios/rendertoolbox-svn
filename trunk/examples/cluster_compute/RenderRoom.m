@@ -1,4 +1,4 @@
-function  RenderRoom(currentConditions,objectMaterialParams,lightMaterialParams)
+function  RenderRoom(currentConditions,objectMaterialParams,lightMaterialParams,rendererParams)
 %parameters:
 %   currentConditions-a struct with fields corresponding to the first line
 %of the conditions file. the field values correspond to the values stored
@@ -28,9 +28,12 @@ Render_SceneObjectsToRad(objectMaterialParams,lightMaterialParams,currentConditi
 display('save radiance material files...');
 Render_RadMaterialFiles(objectMaterialParams,lightMaterialParams,currentConditions);
 
+
+
 %make and write rif files for the whole scene
 display('generating and writing rif files...');
-Render_MakeWriteRifFiles(objectMaterialParams,lightMaterialParams,currentConditions)
+Render_MakeWriteRifFiles(objectMaterialParams,lightMaterialParams,currentConditions,rendererParams);
+
 
 %render the scene
 display('render the scene...');
@@ -41,10 +44,12 @@ display('make picture matrix...');
 Render_PicToMat(currentConditions);
 
 %make S image and cone images
-display('generate image data...');
+display('generate and write image data...');
 Render_MakeSimg(currentConditions);
-%**(do this for now until we read cones in as conditions)
-load T_cones_ss2;
-currentConditions.T_cones = T_cones_ss2;
-currentConditions.S_cones = S_cones_ss2;
+
+%convert into cone image
 Render_MakeConeImage(currentConditions);
+
+%convert into monitor image
+display('generating and writing monitor image...');
+Render_MakeMonitorImage(currentConditions);

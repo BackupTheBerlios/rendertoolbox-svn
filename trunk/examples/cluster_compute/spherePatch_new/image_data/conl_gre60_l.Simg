@@ -21,11 +21,11 @@ struct
 #SimEnd
 
 #SimHeight
-1 
+5 
 #SimEnd
 
 #SimWidth
-1 
+5 
 #SimEnd
 
 ##SimWavelengthSampling
@@ -89,11 +89,11 @@ None
 ##SimEnd
 
 #SimHeight
-1 
+5 
 #SimEnd
 
 #SimWidth
-1 
+5 
 #SimEnd
 
 #SimComments

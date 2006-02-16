@@ -1,0 +1,16 @@
+OCTREE = con5_blue_l_580.oct
+ZONE = Interior 0 40.1 0 25.5 0 19.4
+EXPOSURE = 1.0
+materials = materials_1/obj_material_580.rad 
+scene = lights_1/leftcenter_light.rad	lights_1/rightcenter_light.rad lights_1/leftfront_light.rad	lights_1/rightfront_light.rad objects_1/backwall.obj.rad	objects_1/checkerwhite.obj.rad	objects_1/tableleft.obj.rad objects_1/blackface.obj.rad	objects_1/roomleft.obj.rad	objects_1/testface.obj.rad objects_1/checkerblack.obj.rad	objects_1/roomright.obj.rad	objects_1/whiteface.obj.rad 
+UP = Z
+view = -vf  view_left_01.vf
+RESOLUTION = 800
+QUALITY = Medium
+PENUMBRAS = True
+PICTURE = con5_blue_l_580
+VARIABILITY = Medium
+INDIRECT = 2
+DETAIL = Medium
+REPORT = 0.2
+render = -dj 0.6 -dt 0.01 -dr 3 -ds 0.1 -sj 0.7 -st 0.15 -dc 0.5 -lr 1 -aw 0 -av 0.5 0.5 0.5

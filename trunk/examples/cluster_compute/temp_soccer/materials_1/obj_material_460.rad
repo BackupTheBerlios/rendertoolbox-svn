@@ -1,0 +1,52 @@
+void plastic backwall
+0
+0
+5 0.019696 0.019696 0.019696 0.0 0.0
+void plastic blackface
+0
+0
+5 0.019696 0.019696 0.019696 0.02 0
+void plastic checkerblack
+0
+0
+5 0.69427 0.69427 0.69427 0.05 0.05
+void plastic checkerwhite
+0
+0
+5 0.019696 0.019696 0.019696 0.05 0.05
+void light leftcenter_light
+0
+0
+3 824.67 824.67 824.67
+void light leftfront_light
+0
+0
+3 824.67 824.67 824.67
+void light rightcenter_light
+0
+0
+3 824.67 824.67 824.67
+void light rightfront_light
+0
+0
+3 824.67 824.67 824.67
+void plastic roomleft
+0
+0
+5 0.59124 0.59124 0.59124 0.0 0.0
+void plastic roomright
+0
+0
+5 0.59124 0.59124 0.59124 0.0 0.0
+void plastic tableleft
+0
+0
+5 0.59124 0.59124 0.59124 0.00 0.00
+void plastic testface
+0
+0
+5 1 1 1 0.02 0
+void plastic whiteface
+0
+0
+5 0.69427 0.69427 0.69427 0.02 0
