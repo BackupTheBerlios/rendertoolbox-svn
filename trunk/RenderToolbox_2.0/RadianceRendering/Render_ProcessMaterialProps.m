@@ -1,5 +1,16 @@
 function [objectMaterialParams lightMaterialParams currentConditions] = ...
     Render_ProcessMaterialProps(objectProperties,lightProperties,currentConditions)
+% [objectMaterialParams lightMaterialParams currentConditions] = ...
+%     Render_ProcessMaterialProps(objectProperties,lightProperties,currentConditions)
+%
+% ProcessMaterialProps takes objectProperties, lightProeprties and
+% currentConditions, all previously read from their respective text files,
+% and process them into structures that can be used in RenderRoom. This
+% primarily includes looking up spectral power distributions and surfance
+% reflectance functions from the appropriate tables in the material
+% library, as well as linking condition dependent object and light properties
+% to their values stored in currentConditions. For more information about
+% parameter files, see the documentation in this distribution.
 %
 %
 % 1/29/06 dpl took out unecessary comments and functions

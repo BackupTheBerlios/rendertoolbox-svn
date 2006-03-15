@@ -1,9 +1,16 @@
-function Render_GenerateMaterialSpectrums
-% function Render_GenerateMaterialSpectrums
+function Data_GenerateSur_uvTable
+% function Data_GenerateSur_uvTable
 %
-% make sure to be in the right directory when you runt his function
+% Generates the sur_uvTable.mat file and saves it in the current working
+% directory. The file contains the matrix sur_uvTable which lists the SRF
+% for each value of the UV lookup table. It also contains the variable
+% S=[400 10 31] specifying the wavelength sampling in which sur_uvTable is
+% stored. The format of this file matches that used by SRF lookup tables 
+% in David Brainard's PsychToolbox.
+% 
 %
 % 2/12/06 dpl wrote it. UVTable part based on bx's RenSpectrumfromChrom
+% 3/7/06 dpl made this function only for the UV lookup table
 
 %define constants
 S=[400 10 31];
@@ -11,6 +18,12 @@ S=[400 10 31];
 %uv constants
 uvTable = [0.185 0.419;0.226 0.508;0.242 0.450;0.153 0.489;0.192 0.445; 0.212 0.489;0.221 0.460;0.174 0.479]';
 fraction = 0.5;
+
+%delete existing file if it exists so that when we load the spectrum below,
+%it loads from the Psychtoolbox, not what we've already saved
+if exist('./sur_uvTable.mat','file');
+    unix('rm sur_uvTable.mat');
+end
 
 %load some stuff
 load spd_D65
@@ -45,30 +58,4 @@ end
 
 %save uvTable stuff
 S_uvTable=S;
-save uvTable sur_uvTable S_uvTable;
-
-%do macbeth stuff
-load sur_macbethPeter;
-save sur_macbethPeter sur_macbethPeter S_macbethPeter;
-
-
-
-%now do lights. for now, only the D65 powerspectrum
-
-%modify code below to do this and save it for each value
-% %load spd_D65 for light spectrum. (do this up hear because we need these
-% %variables to calculate spectrums from UV values.)
-% load spd_D65
-% illumspectrum = SplineSrf(S_D65,spd_D65,S);
-% % e=illumspectrum;
-% 
-% %get illumination spectrum for D65
-% lightPower=lightPower;
-% for i = 1:length(wls)
-%     illuminantWatts(i) = illumspectrum(i)*lightPower;
-%     %(not sure what's up with this line, it's from bei's code)
-%     noLights(i)  = illumspectrum(i)*0; 
-% end
-% 
-% 
-% spectrum=illuminationWatts;
+save sur_uvTable sur_uvTable S_uvTable;

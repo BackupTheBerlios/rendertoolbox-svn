@@ -1,4 +1,8 @@
 function Render_MakeSimg(currentConditions)
+% Render_MakeSimg(currentConditions)
+%
+% Turn hyperspectral picture matrix into hyperspectral S image and save to
+% the image_data directory.
 %
 % 1/26/06 dpl wrote it. based on bx's RenMakeHypSimg
 

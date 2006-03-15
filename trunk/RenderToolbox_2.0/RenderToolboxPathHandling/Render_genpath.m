@@ -1,8 +1,12 @@
 function p = Render_genpath(d)
-%exactly the same as the MathWorks supplied Render_genpath, but skips folders that
-%start with '.' or are called 'Conflicts Folder'
+% p = Render_genpath(d)
 %
-%1/11/06 dpl wrote it.
+% Exactly the same as the MathWorks supplied genpath, but skips folders that
+% start with '.' or are called 'Conflicts Folder'. This is important
+% because if the toolbox is stored as an SVN depository, the matlab genpath
+% will add all of SVN's folders which creates conflicts.
+%
+% 1/11/06 dpl wrote it.
 
 
 if nargin==0,

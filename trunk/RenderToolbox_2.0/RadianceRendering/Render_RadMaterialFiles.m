@@ -1,10 +1,13 @@
-function dirName=Render_RadMaterialFiles(objectMaterialParams,lightMaterialParams,currentConditions)
-%makes material files for radiance based on parameters that were read above
-%in RenderRoom. saves them in materials_[condition#] in the experiment
-%directory.
+function Render_RadMaterialFiles(objectMaterialParams,lightMaterialParams,currentConditions)
+% Render_RadMaterialFiles(objectMaterialParams,lightMaterialParams, ...
+%           currentConditions)
 %
-%12/25/05 dpl wrote it. based on bx's RenStructToMaterial and RenCatRad
-%1/19/06  dpl changed to use temporaryDirectory
+% Creates material .rad files based on parameters passed from
+% RenderRadiance and stores them in
+% [temporary_directory]/materials_[condition#].
+%
+% 12/25/05 dpl wrote it. based on bx's RenStructToMaterial and RenCatRad
+% 1/19/06  dpl changed to use temporaryDirectory
 
 %get some stuff from conditions
 currentConditionNumber=currentConditions.currentConditionNumber;
@@ -38,11 +41,7 @@ for currentLight=1:numLights
         case 'area'
             Render_WriteRadMaterial_Area(lightMaterialParams(currentLight),dirName);
         case 'spot'
-            %**(not tested because I don't have an experiment with a spot
-            %light source.)
-            %**(NOTE::need to update this to work with temp directory)
-            name=lightMaterialParams(currentLight).name;
-            RenStructToMaterial(lightMaterialParams(currentLight),name,dirName);
+            Render_WriteRadMaterial_Spot(lightMaterialParams(currentLight),dirName);
         otherwise
             error('unsupported light type. only support area and spot for right now.');
     end

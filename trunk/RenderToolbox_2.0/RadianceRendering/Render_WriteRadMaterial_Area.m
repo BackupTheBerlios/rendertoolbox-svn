@@ -1,10 +1,9 @@
 function Render_WriteRadMaterial_Area(currentLightMaterialParams,dirName)
-%Render_Render_WriteRadMaterial_Area(currentLightMaterialParams,dirName)
+% Render_Render_WriteRadMaterial_Area(currentLightMaterialParams,dirName)
 %
-%Take a material structure for a area type  generated earlier in 
-%RenderRoom and write it into a .rad file that radiance can read.
+% Write a .rad material file for an area light
 %
-%12/25/05 dpl wrote it. based on bx's RenStructToMaterial
+% 12/25/05 dpl wrote it. based on bx's RenStructToMaterial
 
 numWavelengths=length(currentLightMaterialParams.wavelength);
 

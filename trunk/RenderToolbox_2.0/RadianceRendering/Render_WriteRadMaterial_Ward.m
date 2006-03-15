@@ -1,10 +1,9 @@
 function Render_WriteRadMaterial_Ward(currentObjectMaterialParams,dirName)
-%Render_Render_WriteRadMaterial_Ward(currentObjectMaterialParams,dirName)
+% Render_Render_WriteRadMaterial_Ward(currentObjectMaterialParams,dirName)
 %
-%Take a material structure for a ward object generated earlier in 
-%RenderRoom and write it into a .rad file that radiance can read.
+% Write a ward material file based on an object's parameters. %
 %
-%12/25/05 dpl wrote it. based on bx's RenStructToMaterial
+% 12/25/05 dpl wrote it. based on bx's RenStructToMaterial
 
 
 

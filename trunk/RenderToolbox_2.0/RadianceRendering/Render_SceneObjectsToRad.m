@@ -1,22 +1,13 @@
 function Render_SceneObjectsToRad(objectMaterialParams,lightMaterialParams,currentConditions)
-%converts objects in scene_objects directory into radiance files and
-%and sorts into objects and lights folders:
-%*objects that are not lights are converted to rad files using the binary application
-%obj2rad and then placed into objects_[condition#] directory
-%*lights are already .rad files and are copied into lights_[condition#]
-%directory
+% Render_SceneObjectsToRad(objectMaterialParams,lightMaterialParams,currentConditions)
 %
-%parameters: objectProperties,numObjects/lightProperties,numLights are passed into RenderRoom
-%currentConditionNumber is the number of the current condition.
-%
-%note that this function expects matlab to be in the experiment directory,
-%not the scene_objects directory.
-%
-%**(bei's RenObjToRad simply copied .obj files instead of applying obj2rad
-%if they included 'plane' in  their name. i didn't understand this, and
-%left this function out for now. the two scenes that I am working with,
-%spherePatch and singleSphere don't have planes, so this may become
-%relevant with other experiments.)
+% SceneObjectsToRad converts each object in the scene directory into a
+% radiance file, and stores it in [temporary_directory]/objects_[condition#]
+% using the binary application obj2rad. Lights are already radiance files,
+% so SceneObjectsToRad copies them into [temporary_directory]/lights_[condition#].
+% The parameters are those passed to RenderRadiance by batchRender.
+% Like RenderRadiance, the current working directory must be the
+% experiment directory.
 %
 %12/24/05 dpl wrote it. based on bx's RenObjToRad
 

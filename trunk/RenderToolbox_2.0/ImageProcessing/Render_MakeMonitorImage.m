@@ -1,6 +1,10 @@
 function Render_MakeMonitorImage(currentConditions)
 % Render_MakeMonitorImage(currentConditions)
 %
+% Create a monitor image based on the the cone image. Looks in
+% cone_image_data/ for the cone image and saves the monitor image data in
+% monitor_image_data/
+%
 % 2/2/2006 dpl wrote it. based on bx's RenMakeMonitorImageNew
 
 %get stuff from currentConditions

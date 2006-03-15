@@ -1,12 +1,15 @@
 function Render_MakeWriteRifFiles(objectMaterialParams,lightMaterialParams,currentConditions,rendererParams)
-%makes and writes the rif files for the scene. replaces RenMake_rif_struct
-%and RenWrite_rifs from Bei's code. I'm not sure why they were separated
-%before. To make these structures and work with them separately from
-%writing the files, see the above functions in the RenderToolbox.
+% Render_MakeWriteRifFiles(objectMaterialParams,lightMaterialParams, ... 
+%           currentConditions,rendererParams)
 %
-%12/27/05 dpl wrote it. based on bx's RenMake_rif_struct and RenWrite_rifs
-%1/23/06  dpl changed to use temporary directory
-%2/3/06 dpl moved viewFile into currentConditions
+% Generates and writes .rif files for radiance based on conditions passed
+% by RenderRadiance. Files are saved in
+% [temporary_directory]/rifFiles_[condition#]
+%
+% 12/27/05 dpl wrote it. based on bx's RenMake_rif_struct and RenWrite_rifs
+% 1/23/06  dpl changed to use temporary directory
+% 2/3/06 dpl moved viewFile into currentConditions
+% 3/2/06 dpl took out some comments
 
 %get some stuff from conditions
 currentConditionNumber=currentConditions.currentConditionNumber;
@@ -30,16 +33,7 @@ resolution=int2str(currentConditions.imageRes);
 rif_name=currentConditions.sceneName;
 
 %get values from rendererParams, converting everything into strings
-% zone=sscanf(rendererParams.zone,'%s');
-% exposure=sscanf(rendererParams.exposure,'%s');
-% z=sscanf(rendererParams.z,'%s');
-% quality=sscanf(rendererParams.quality,'%s');
-% penumbras=sscanf(rendererParams.penumbras,'%s');
-% indirect=sscanf(rendererParams.indirect,'%s');
-% detail=sscanf(rendererParams.detail,'%s');
-% variability=sscanf(rendererParams.variability,'%s');
-% report=sscanf(rendererParams.report,'%s');
-% render=sscanf(rendererParams.render,'%s');
+
 zone=rendererParams.zone;
 exposure=rendererParams.exposure;
 z=rendererParams.z;

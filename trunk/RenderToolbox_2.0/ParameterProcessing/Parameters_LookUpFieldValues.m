@@ -1,5 +1,13 @@
 function materialParam=Parameters_LookUpFieldValues(S,materialParam,currentObject,objectProperties,name,value)
-% Parameters_LookUpFieldValues
+% materialParam=Parameters_LookUpFieldValues(S,materialParam, ...
+%               currentObject,objectProperties,name,value)
+%
+% LookUpFieldValues takes the name of a property of an object and its
+% value, and stores it in the materialParam struct for that object. If
+% necessary, it changes the name to what RenderRoom expects. For property
+% values that refer to lookup tables, such as SRFs and SPDs,
+% LookUpFieldValues calls the appropriate function to return the value
+% found in the lookup table.
 %
 % 12/4/05 dpl wrote it.
 % 2/14/06 dpl changed it to work with RenderDataFiles changed name from

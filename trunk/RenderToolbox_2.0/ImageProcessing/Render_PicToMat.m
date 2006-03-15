@@ -1,6 +1,8 @@
 function [picMat] = Render_PicToMat(currentConditions) 
-% function [picMat] = Render_PicToMat(wavelengths, rifStruct) 
+%  [picMat] = Render_PicToMat(currentConditions) 
 % 
+% Change the rendered image into an image matrix.
+%
 % 1/25/06 dpl wrote it. based on bx's RenPicToMat
 
 %get stuff from conditions, some for use in bei's code below

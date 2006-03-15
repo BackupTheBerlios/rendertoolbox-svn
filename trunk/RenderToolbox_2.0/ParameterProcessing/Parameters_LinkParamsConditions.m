@@ -1,11 +1,16 @@
-% RenParamGetPropValue
-%retrieves the value of the current property of the current object, and
-%links this to the current conditions if necessary.
-%
-%will put this into rendertoolbox soon.
-%
-%12/4/05 dpl wrote it.
 function [name value]=Parameters_LinkParamsConditions(currentObjectProperty,currentObject,objectProperties,currentConditions)
+% [name value]=Parameters_LinkParamsConditions(currentObjectProperty, ...
+%             currentObject,objectProperties,currentConditions)
+%
+% LinkParamsConditions looks up the value of a light or object property in
+% currentConditions if the property is condition dependent. It does not,
+% however, look up specific SPDs or SRFs, only the values stored directly
+% in currentConditions. Use LookUpFieldValues or MapLightPropertyToField to
+% do this function. Refer to the documentation in this distribution for a
+% full description of parameter and conditions files.
+%
+% 12/4/05 dpl wrote it.
+
 
 %get stats about objects
 %**(unnecessary to do this each time the function is called, but causes

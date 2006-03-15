@@ -1,6 +1,9 @@
-function [coneImage] = Render_MakeConeImage(currentConditions)
-%
+function Render_MakeConeImage(currentConditions)
 % Render_MakeConeImage(currentConditions)
+%
+% Generate a cone image from the hyperspectral S image, created by
+% Render_MakeSImage. Looks for the S image in image_data/ and saves the
+% cone image in cone_image_data.
 %
 % 1/26/06 dpl wrote it. based on bx's RenMakeConeImage
 

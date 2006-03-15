@@ -1,11 +1,11 @@
 function Render_PathChange(version)
-%Render_PathChange(version)
+% Render_PathChange(version)
 %
-%add the path to the redertoolbox of the passed version
-%number and takes all other versions off the path
+% PathChange adds the path to the redertoolbox of the passed version
+% number and takes all other versions off the path.
 %
-%1/12/06 dpl wrote it.
-%2/14/06 dpl fixed bug that chopped off the last path entry on each run :)
+% 1/12/06 dpl wrote it.
+% 2/14/06 dpl fixed bug that chopped off the last path entry on each run :)
 
 %hard code paths to different versions
 %**(can make this smarter sometime)

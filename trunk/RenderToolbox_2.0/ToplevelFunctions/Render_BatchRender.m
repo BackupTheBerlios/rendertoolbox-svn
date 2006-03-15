@@ -1,33 +1,34 @@
 function Render_BatchRender(experimentDirectory)
 % Render_BatchRender(experimentDirectory)
 %
-%11/27/05 dpl wrote it. based on bx's batchRender
-%12/28/05 dpl modified to link objectProperties, lightProperties etc...
-%2/17/06 dpl major changes.
+% BatchRender is the function that starts the whole rendering process. It's
+% parameter, 'experimentDirectory' specifies the full path of the
+% directory in which the scene to be rendered is stored. BatchRender reads
+% the complete scene description, including each of its conditions, from
+% four textfiles: conditions.txt, lightProperties.txt,
+% objectProperties.txt, and rendererParams.txt, as well as the files in the
+% scene_objects directory. It calls RenderRoom once for each condition,
+% passing it the current parameters for the scene. For more details
+% concerning the organization of the experiment directory, the text
+% parameter files and the scene_objects folder, see the documents in the
+% documentations folder of this distribution.
+%
+% This version of BatchRender requires version 2 of the RenderToolbox. Run
+% Render_PathChange(2) to make sure this version and no others are on the
+% matlab path.
+%
+% 11/27/05 dpl wrote it. based on bx's batchRender
+% 12/28/05 dpl modified to link objectProperties, lightProperties etc...
+% 2/17/06 dpl major changes.
 
-%conditions within this file.
-%assumptions about conditions and object files:
-% *first field in each condition is sceneName
-% *in objectProperties, if a c_ preceeds the value it's value is looked up
-%in conditions. the scricpt searches for a field name corresponding to the
-%value it finds in objectProperties, not including the prdeceeding 'c_'
-%d  *if a value is not a string, it assumes its a number, and converts it into
-%a string
 
 display(['running at ' datestr(now)]);
 
 %deal with path--add current directory to path
 addpath(pwd);
 
-%set which rendertoolbox we're using
-versionNumber=2;
-Render_PathChange(versionNumber);
-
-%set which experiment we're çdoing
+%cd into the experiment directory
 cd(experimentDirectory);
-
-%remove previous temporary files
-unix('rm -rf temporary_files');
 
 %set directory locations
 %**(this can be made flexible sometime if we want)
@@ -38,9 +39,11 @@ monitorImageDirectory='monitor_image_data';
 temporaryDirectory='tmp';
 viewFilesDirectory='view_files';
 
+%remove previous temporary files
+unix(['rm -rf ' temporaryDirectory]);
 
 %read from object file
-objectProperties=Render_ReadStructsFromTabText('objectProperties.txt');
+objectProperties=Parameters_ReadStructsFromTabText('objectProperties.txt');
 numObjects=length(objectProperties);
 objectPropertyNames=fieldnames(objectProperties(1));
 numObjectPropertyNames=length(objectPropertyNames);
@@ -97,7 +100,7 @@ end
 cd ..;
 
 %read from conditions file
-allConditions=Render_ReadStructsFromTabText('conditions.txt');
+allConditions=Parameters_ReadStructsFromTabText('conditions.txt');
 numConditions=length(allConditions);
 
 %check to make sure we have required fields in conditions file
@@ -111,7 +114,7 @@ for i=1:length(requirements)
 end
 
 %read from renderer properties file
-rendererParams=Render_ReadStructsFromTabText('rendererParams.txt');
+rendererParams=Parameters_ReadStructsFromTabText('rendererParams.txt');
 
 %check to make sure we have required fields
 requirements={'zone','exposure','z','quality','penumbras', ...
@@ -146,7 +149,7 @@ end
    
 %render the scene
 for currentConditionNumber=1:numConditions
-	try
+% 	try
         display(['**Current condition: ' allConditions(currentConditionNumber).sceneName ...
             ', ' datestr(now)]);
         switch(allConditions(currentConditionNumber).renderer)
@@ -158,18 +161,18 @@ for currentConditionNumber=1:numConditions
                     Render_ProcessMaterialProps(objectProperties,lightProperties,allConditions(currentConditionNumber));
                 %note: we must be in the experiment directory for this function to
                 %work.
-                Render_RenderRoom(currentConditions,objectMaterialParams,lightMaterialParams,rendererParams);
+                Render_RenderRadiance(currentConditions,objectMaterialParams,lightMaterialParams,rendererParams);
             otherwise
                 error('Only the radiance renderer is currently supported.');
         end
         display(['Finished at ' datestr(now)]);
         display(' ');
-	catch
-		display('Could not finish this condition for following reason:')
-		display(lasterr);
-		display(' ');
-	end
-    
+% 	catch
+% 		display('Could not finish this condition for following reason:')
+% 		display(lasterr);
+% 		display(' ');
+% 	end
+%     
 end
 
 cd ..;
