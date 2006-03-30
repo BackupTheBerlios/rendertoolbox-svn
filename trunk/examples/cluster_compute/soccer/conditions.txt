@@ -1,1 +1,0 @@
-sceneName	renderer	imageRes	wavelengthsStart	wavelengthsStep	wavelengthsNumSteps	viewFile	humanCones	tonemap	calibrationFile	lightPowercon5	radiance	100	400	50	7	view_left_01.vf	ss2	1	StereoLeft_8	7
