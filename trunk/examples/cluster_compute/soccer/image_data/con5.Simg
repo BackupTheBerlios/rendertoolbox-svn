@@ -1,0 +1,105 @@
+# File written by SimWriteImage
+
+#SimImageType
+hyperspectral
+#SimEnd
+
+#SimImageRoot
+con5
+#SimEnd
+
+#SimFileType
+mat
+#SimEnd
+
+#SimCameraFile
+struct
+#SimEnd
+
+#SimExposureTime
+2 
+#SimEnd
+
+#SimHeight
+75 
+#SimEnd
+
+#SimWidth
+75 
+#SimEnd
+
+##SimWavelengthSampling
+##SimStart
+400 
+##SimStep
+50 
+##SimNumberSamples
+7 
+##SimEnd
+
+#Sim#ImageFactors
+7 1
+1 
+1 
+1 
+1 
+1 
+1 
+1 
+
+#SimInputCameraDistance
+1 
+#SimEnd
+
+#SimComments
+Created by RenHypMakeSimgFromTiff
+#SimEndComments
+
+# Camera description for image above
+
+#SimManufacturer
+n/a
+#SimEnd
+
+#SimName
+RadianceCamera
+#SimEnd
+
+#SimNumberSensors
+1 
+#SimEnd
+
+#Sim#WavelengthSampling
+1 3
+400 50 7 
+
+#Sim#SpectralSensitivity
+1 7
+0 0 0 0 0 0 0 
+
+#SimUnit
+None
+#SimEnd
+
+#SimLens
+135 
+#SimEnd
+
+##SimAngularResolution
+##SimX
+113.4 
+##SimY
+113.4 
+##SimEnd
+
+#SimHeight
+75 
+#SimEnd
+
+#SimWidth
+75 
+#SimEnd
+
+#SimComments
+Radiance Virtual Camera
+#SimEndComments
