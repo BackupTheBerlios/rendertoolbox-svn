@@ -11,7 +11,7 @@
 // image.cpp*
 #include "pbrt.h"
 #include "film.h"
-#include "color.h"
+#include "color_hyp.h"
 #include "paramset.h"
 #include "tonemap.h"
 #include "sampling.h"
@@ -141,6 +141,9 @@ void ImageFilm::GetSampleExtent(int *xstart,
 		filter->yWidth);
 }
 void ImageFilm::WriteImage() {
+	//debug
+	Info("\nImageFilm::WriteImage()\n");
+
 	// Convert image to RGB and compute final pixel values
 	int nPix = xPixelCount * yPixelCount;
 	float *rgb = new float[3*nPix], *alpha = new float[nPix];
@@ -210,10 +213,11 @@ void ImageFilm::WriteImage() {
 		}
 	}
 	// Write RGBA image
-	WriteRGBAImage(filename, rgb, alpha,
-		xPixelCount, yPixelCount,
-		xResolution, yResolution,
-		xPixelStart, yPixelStart);
+	Info("not writing exr image\n");
+// 	WriteRGBAImage(filename, rgb, alpha,
+// 		xPixelCount, yPixelCount,
+// 		xResolution, yResolution,
+// 		xPixelStart, yPixelStart);
 	// Release temporary image memory
 	
 	//(dpl)write rgb and xyz data to disk and see if we can read it into matlab
@@ -232,6 +236,8 @@ void ImageFilm::WriteImage() {
 	delete[] alpha;
 	delete[] rgb;
 }
+
+
 extern "C" DLLEXPORT Film *CreateFilm(const ParamSet &params, Filter *filter)
 {
 	string filename = params.FindOneString("filename", "pbrt.exr");

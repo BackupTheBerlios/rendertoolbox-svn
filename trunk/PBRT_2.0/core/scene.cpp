@@ -17,6 +17,8 @@
 #include "volume.h"
 // Scene Methods
 void Scene::Render() {
+	Info("Start Render");
+
 	// Allocate and initialize _sample_
 	Sample *sample = new Sample(surfaceIntegrator,
 	                            volumeIntegrator,
@@ -26,11 +28,12 @@ void Scene::Render() {
 	volumeIntegrator->Preprocess(this);
 	// Trace rays: The main loop
 	ProgressReporter progress(sampler->TotalSamples(), "Rendering");
+	Info("Render: going through samples");
 	while (sampler->GetNextSample(sample)) {
-		// Find camera ray for _sample_
+		Info("// Find camera ray for _sample_");
 		RayDifferential ray;
 		float rayWeight = camera->GenerateRay(*sample, &ray);
-		// Generate ray differentials for camera ray
+		Info("// Generate ray differentials for camera ray");
 		++(sample->imageX);
 		camera->GenerateRay(*sample, &ray.rx);
 		--(sample->imageX);
@@ -38,12 +41,16 @@ void Scene::Render() {
 		camera->GenerateRay(*sample, &ray.ry);
 		ray.hasDifferentials = true;
 		--(sample->imageY);
-		// Evaluate radiance along camera ray
+		Info("// Evaluate radiance along camera ray");
 		float alpha;
+		Info("declare spectrum");
 		Spectrum Ls = 0.f;
-		if (rayWeight > 0.f)
-			Ls = rayWeight * Li(ray, sample, &alpha);
-		// Issue warning if unexpected radiance value returned
+		Info("check rayWeight");
+		if (rayWeight > 0.f) {
+			Ls = rayWeight * Li(ray, sample, &alpha); 
+			Info("finished check");
+		}
+		Info("// Issue warning if unexpected radiance value returned");
 		if (Ls.IsNaN()) {
 			Error("Not-a-number radiance value returned "
 		          "for image sample.  Setting to black.");
@@ -59,15 +66,17 @@ void Scene::Render() {
 		          "for image sample.  Setting to black.");
 			Ls = Spectrum(0.f);
 		}
-		// Add sample contribution to image
+		Info("// Add sample contribution to image");
 		camera->film->AddSample(*sample, ray, Ls, alpha);
-		// Free BSDF memory from computing image sample value
+		Info("// Free BSDF memory from computing image sample value");
 		BSDF::FreeAll();
-		// Report rendering progress
+		Info("// Report rendering progress");
 		static StatsCounter cameraRaysTraced("Camera", "Camera Rays Traced");
 		++cameraRaysTraced;
 		progress.Update();
+		Info("Render: Finished first sample");
 	}
+	Info("Render:finsihed taking samples");
 	// Clean up after rendering and store final image
 	delete sample;
 	progress.Done();

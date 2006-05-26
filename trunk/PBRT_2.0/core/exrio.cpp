@@ -19,7 +19,7 @@
 #include <ImfFrameBuffer.h>
 #include <half.h>
 #include "pbrt.h"
-#include "color.h"
+#include "color_hyp.h"
 using namespace Imf;
 using namespace Imath;
 // EXR Function Definitions
@@ -80,18 +80,23 @@ COREDLL void WriteRGBAImage(const string &name, float *pixels,
 	hrgb -= 3 * (xOffset + yOffset * xRes);
 	ha -= (xOffset + yOffset * xRes);
 
+	Info("start buffer");
 	FrameBuffer fb;
+	Info("buffer insert");
 	fb.insert("R", Slice(HALF, (char *)hrgb, 3*sizeof(half),
 		3*xRes*sizeof(half)));
+	Info("second insert");
 	fb.insert("G", Slice(HALF, (char *)hrgb+sizeof(half), 3*sizeof(half),
 		3*xRes*sizeof(half)));
 	fb.insert("B", Slice(HALF, (char *)hrgb+2*sizeof(half), 3*sizeof(half),
 		3*xRes*sizeof(half)));
 	fb.insert("A", Slice(HALF, (char *)ha, sizeof(half), xRes*sizeof(half)));
 
+	Info("\nstart file");
 	OutputFile file(name.c_str(), header);
 	file.setFrameBuffer(fb);
 	try {
+		Info("trying to write file.\n");
 		file.writePixels(yRes);
 	}
 	catch (const std::exception &e) {

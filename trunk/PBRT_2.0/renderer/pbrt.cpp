@@ -12,8 +12,17 @@
 // pbrt.cpp*
 #include "pbrt.h"
 #include "api.h"
+
+//int COLOR_SAMPLES;
+
 // main program
 int main(int argc, char *argv[]) {
+
+	//COLOR_SAMPLES
+	//COLOR_SAMPLES=31;
+
+	printf("COLOR_SAMPLES=%d\n",COLOR_SAMPLES);
+
 	// Print welcome banner
 	printf("pbrt version %1.3f of %s at %s\n",
 	       PBRT_VERSION, __DATE__, __TIME__);

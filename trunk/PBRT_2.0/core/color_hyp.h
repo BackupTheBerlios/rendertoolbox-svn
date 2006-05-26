@@ -12,6 +12,10 @@
 #define PBRT_COLOR_H
 // color.h*
 #include "pbrt.h"
+
+//COLOR_SAMPLES
+// extern int COLOR_SAMPLES;
+
 // Spectrum Declarations
 class COREDLL Spectrum {
 public:
@@ -20,7 +24,7 @@ public:
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			c[i] = v;
 	}
-	Spectrum(float cs[COLOR_SAMPLES]) {
+	Spectrum(float cs[]) {
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			c[i] = cs[i];
 	}
@@ -168,15 +172,15 @@ public:
 	static const float CIE_X[nCIE];
 	static const float CIE_Y[nCIE];
 	static const float CIE_Z[nCIE];
+	float c[];
 private:
 	// Spectrum Private Data
 	//(dpl)transformation between 'Spectrum' representation with
 	//COLOR_SAMPLES number of samples to XYZ.
 	//**needs to be redefined if we change COLOR_SAMPLES
-	float c[COLOR_SAMPLES];
-	static float XWeight[COLOR_SAMPLES];
-	static float YWeight[COLOR_SAMPLES];
-	static float ZWeight[COLOR_SAMPLES];
+	static float XWeight[];
+	static float YWeight[];
+	static float ZWeight[];
 // 	friend Spectrum FromXYZ(float x, float y, float z);
 };
 #endif // PBRT_COLOR_H

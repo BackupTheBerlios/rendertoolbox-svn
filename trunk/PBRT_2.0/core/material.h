@@ -14,7 +14,7 @@
 #include "pbrt.h"
 #include "primitive.h"
 #include "texture.h"
-#include "color.h"
+#include "color_hyp.h"
 #include "reflection.h"
 #include "reflection_custom.h" //dpl 10 august 2005
 // Material Class Declarations

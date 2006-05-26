@@ -12,7 +12,7 @@
 #define PBRT_MIPMAP_H
 // mipmap.h*
 #include "pbrt.h"
-#include "color.h"
+#include "color_hyp.h"
 // MIPMap Declarations
 typedef enum {
 	TEXTURE_REPEAT,

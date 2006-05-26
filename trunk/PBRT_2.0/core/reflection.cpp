@@ -13,7 +13,7 @@
 
 // reflection.cpp*
 #include "reflection.h"
-#include "color.h"
+#include "color_hyp.h"
 #include "mc.h"
 #include "sampling.h"
 #include <stdarg.h>

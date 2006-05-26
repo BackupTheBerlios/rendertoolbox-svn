@@ -35,7 +35,7 @@ ostream &operator<<(ostream &os, const Spectrum &s) {
 // 	0.019334f, 0.119193f, 0.950227f
 // };
 
-float Spectrum::XWeight[COLOR_SAMPLES] = {
+float Spectrum::XWeight[] = {
 	0.037981f, 0.099941f, 0.229480f, 0.310950f, 0.333360f, 0.288820f,
 	0.232760f, 0.174760f, 0.091944f, 0.031731f, 0.004849f, 0.009290f, 
 	0.063791f, 0.166920f, 0.292690f, 0.436350f, 0.597480f, 0.764250f, 
@@ -43,7 +43,7 @@ float Spectrum::XWeight[COLOR_SAMPLES] = {
 	0.440620f, 0.278620f, 0.161610f, 0.085753f, 0.045834f, 0.022187f,
 	0.011098f
 };
-float Spectrum::YWeight[COLOR_SAMPLES] = {
+float Spectrum::YWeight[] = {
 	0.002800f, 0.007400f, 0.017500f, 0.027300f, 0.037900f, 0.046800f,
 	0.060000f, 0.090980f, 0.139020f, 0.208020f, 0.323000f, 0.503000f,
 	0.710000f, 0.862000f, 0.954000f, 0.994950f, 0.995000f, 0.952000f,
@@ -51,7 +51,8 @@ float Spectrum::YWeight[COLOR_SAMPLES] = {
 	0.175000f, 0.107000f, 0.061000f, 0.032000f, 0.017000f, 0.008210f,
 	0.004102f
 };
-float Spectrum::ZWeight[COLOR_SAMPLES] = {
+float Spectrum::ZWeight[
+] = {
 	0.174090f, 0.460530f, 1.065800f, 1.467200f, 1.616600f, 1.471700f, 
 	1.291700f, 1.113800f, 0.755960f, 0.446690f, 0.264370f, 0.154450f, 
 	0.076585f, 0.041366f, 0.020042f, 0.008782f, 0.004049f, 0.002277f, 

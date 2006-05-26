@@ -193,6 +193,9 @@ class VolumeIntegrator;
 #define RAY_EPSILON 1e-3f
 //(dpl)
 #define COLOR_SAMPLES 31 //S=[380 10 31] per Bei's code
+//make this a global variable
+//extern int COLOR_SAMPLES;
+
 // Global Function Declarations
 // Setup printf format
 #ifdef __GNUG__

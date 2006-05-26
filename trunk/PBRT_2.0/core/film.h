@@ -12,6 +12,10 @@
 #define PBRT_FILM_H
 // film.h*
 #include "pbrt.h"
+
+//COLOR_SAMPLES
+// extern int COLOR_SAMPLES;
+
 // Film Declarations
 class Film {
 public:

@@ -11,7 +11,7 @@
 // api.cpp*
 #include "api.h"
 #include "paramset.h"
-#include "color.h"
+#include "color_hyp.h"
 #include "scene.h"
 #include "film.h"
 #include "dynload.h"
