@@ -13,7 +13,7 @@
 
 // reflection.cpp*
 #include "reflection.h"
-#include "color_hyp.h"
+#include "color.h"
 #include "mc.h"
 #include "sampling.h"
 #include <stdarg.h>
@@ -173,30 +173,30 @@ Spectrum Microfacet::f(const Vector &wo,
 		 (4.f * cosThetaI * cosThetaO);
 }
 
-// commented, dpl 10 august 2005
-Lafortune::Lafortune(const Spectrum &r, u_int nl,
-	const Spectrum *xx,
-	const Spectrum *yy,
-	const Spectrum *zz,
-	const Spectrum *e, BxDFType t)
-	: BxDF(t), R(r) {
-	nLobes = nl;
-	x = xx;
-	y = yy;
-	z = zz;
-	exponent = e;
-}
-Spectrum Lafortune::f(const Vector &wo,
-                      const Vector &wi) const {
-	Spectrum ret = R * INV_PI;
-	for (u_int i = 0; i < nLobes; ++i) {
-		// Add contribution for $i$th Phong lobe
-		Spectrum v = x[i] * wo.x * wi.x + y[i] * wo.y * wi.y +
-			z[i] * wo.z * wi.z;
-		ret += v.Pow(exponent[i]);
-	}
-	return ret;
-}
+
+// Lafortune::Lafortune(const Spectrum &r, u_int nl,
+// 	const Spectrum *xx,
+// 	const Spectrum *yy,
+// 	const Spectrum *zz,
+// 	const Spectrum *e, BxDFType t)
+// 	: BxDF(t), R(r) {
+// 	nLobes = nl;
+// 	x = xx;
+// 	y = yy;
+// 	z = zz;
+// 	exponent = e;
+// }
+// Spectrum Lafortune::f(const Vector &wo,
+//                       const Vector &wi) const {
+// 	Spectrum ret = R * INV_PI;
+// 	for (u_int i = 0; i < nLobes; ++i) {
+// 		// Add contribution for $i$th Phong lobe
+// 		Spectrum v = x[i] * wo.x * wi.x + y[i] * wo.y * wi.y +
+// 			z[i] * wo.z * wi.z;
+// 		ret += v.Pow(exponent[i]);
+// 	}
+// 	return ret;
+// }
 
 
 // commented, dpl 10 august 2005
@@ -324,47 +324,47 @@ float Anisotropic::Pdf(const Vector &wo,
 }
 
 
-// commented, dpl 10 august 2005
-Spectrum Lafortune::Sample_f(const Vector &wo, Vector *wi,
-		float u1, float u2, float *pdf) const {
-	u_int comp = RandomUInt() % (nLobes+1);
-	if (comp == nLobes) {
-		// Cosine-sample the hemisphere, flipping the direction if necessary
-		*wi = CosineSampleHemisphere(u1, u2);
-		if (wo.z < 0.) wi->z *= -1.f;
-	}
-	else {
-		// Sample lobe _comp_ for Lafortune BRDF
-		float xlum = x[comp].y();
-		float ylum = y[comp].y();
-		float zlum = z[comp].y();
-		float costheta = powf(u1, 1.f / (.8f * exponent[comp].y() + 1));
-		float sintheta = sqrtf(max(0.f, 1.f - costheta*costheta));
-		float phi = u2 * 2.f * M_PI;
-		Vector lobeCenter = Normalize(Vector(xlum * wo.x, ylum * wo.y, zlum * wo.z));
-		Vector lobeX, lobeY;
-		CoordinateSystem(lobeCenter, &lobeX, &lobeY);
-		*wi = SphericalDirection(sintheta, costheta, phi, lobeX, lobeY,
-			lobeCenter);
-	}
-	if (!SameHemisphere(wo, *wi)) return Spectrum(0.f);
-	*pdf = Pdf(wo, *wi);
-	return f(wo, *wi);
-}
-float Lafortune::Pdf(const Vector &wo, const Vector &wi) const {
-	if (!SameHemisphere(wo, wi)) return 0.f;
-	float pdfSum = fabsf(wi.z) * INV_PI;
-	for (u_int i = 0; i < nLobes; ++i) {
-		float xlum = x[i].y();
-		float ylum = y[i].y();
-		float zlum = z[i].y();
-		Vector lobeCenter =
-			Normalize(Vector(wo.x * xlum, wo.y * ylum, wo.z * zlum));
-		float e = .8f * exponent[i].y();
-		pdfSum += (e + 1.f) * powf(max(0.f, Dot(wi, lobeCenter)), e);
-	}
-	return pdfSum / (1.f + nLobes);
-}
+
+// Spectrum Lafortune::Sample_f(const Vector &wo, Vector *wi,
+// 		float u1, float u2, float *pdf) const {
+// 	u_int comp = RandomUInt() % (nLobes+1);
+// 	if (comp == nLobes) {
+// 		// Cosine-sample the hemisphere, flipping the direction if necessary
+// 		*wi = CosineSampleHemisphere(u1, u2);
+// 		if (wo.z < 0.) wi->z *= -1.f;
+// 	}
+// 	else {
+// 		// Sample lobe _comp_ for Lafortune BRDF
+// 		float xlum = x[comp].y();
+// 		float ylum = y[comp].y();
+// 		float zlum = z[comp].y();
+// 		float costheta = powf(u1, 1.f / (.8f * exponent[comp].y() + 1));
+// 		float sintheta = sqrtf(max(0.f, 1.f - costheta*costheta));
+// 		float phi = u2 * 2.f * M_PI;
+// 		Vector lobeCenter = Normalize(Vector(xlum * wo.x, ylum * wo.y, zlum * wo.z));
+// 		Vector lobeX, lobeY;
+// 		CoordinateSystem(lobeCenter, &lobeX, &lobeY);
+// 		*wi = SphericalDirection(sintheta, costheta, phi, lobeX, lobeY,
+// 			lobeCenter);
+// 	}
+// 	if (!SameHemisphere(wo, *wi)) return Spectrum(0.f);
+// 	*pdf = Pdf(wo, *wi);
+// 	return f(wo, *wi);
+// }
+// float Lafortune::Pdf(const Vector &wo, const Vector &wi) const {
+// 	if (!SameHemisphere(wo, wi)) return 0.f;
+// 	float pdfSum = fabsf(wi.z) * INV_PI;
+// 	for (u_int i = 0; i < nLobes; ++i) {
+// 		float xlum = x[i].y();
+// 		float ylum = y[i].y();
+// 		float zlum = z[i].y();
+// 		Vector lobeCenter =
+// 			Normalize(Vector(wo.x * xlum, wo.y * ylum, wo.z * zlum));
+// 		float e = .8f * exponent[i].y();
+// 		pdfSum += (e + 1.f) * powf(max(0.f, Dot(wi, lobeCenter)), e);
+// 	}
+// 	return pdfSum / (1.f + nLobes);
+// }
 
 
 // commented, dpl 10 august 2005

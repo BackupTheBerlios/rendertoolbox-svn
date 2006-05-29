@@ -12,7 +12,7 @@
 #define PBRT_CAMERA_H
 // camera.h*
 #include "pbrt.h"
-#include "color_hyp.h"
+#include "color.h"
 #include "sampling.h"
 #include "geometry.h"
 #include "transform.h"

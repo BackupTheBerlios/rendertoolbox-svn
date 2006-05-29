@@ -13,7 +13,7 @@
 // transport.h*
 #include "pbrt.h"
 #include "primitive.h"
-#include "color_hyp.h"
+#include "color.h"
 #include "light.h"
 #include "reflection.h"
 #include "sampling.h"

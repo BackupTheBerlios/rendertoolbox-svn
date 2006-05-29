@@ -41,7 +41,7 @@ LD=$(CXX) $(OPT)
 
 ACCELERATORS = grid kdtree
 CAMERAS      = environment orthographic perspective
-CORE         = api camera color_hyp dynload exrio film geometry light material mc \
+CORE         = api camera color dynload exrio film geometry light material mc \
                paramset parser primitive reflection reflection_custom sampling scene shape \
                texture timer transform transport util volume pbrtparse pbrtlex
 FILM         = image
@@ -98,7 +98,7 @@ SAMPLERS_OBJS     := $(addprefix objs/, $(SAMPLERS:=.o))
 
 RENDERER_BINARY = bin/pbrt
 
-CORE_HEADERFILES = api.h camera.h color_hyp.h dynload.h film.h geometry.h \
+CORE_HEADERFILES = api.h camera.h color.h dynload.h film.h geometry.h \
                   kdtree.h light.h pbrt.h material.h mc.h mipmap.h octree.h \
                   paramset.h primitive.h reflection.h reflection_custom.h \
                   sampling.h scene.h shape.h texture.h timer.h tonemap.h \

@@ -20,29 +20,17 @@ ostream &operator<<(ostream &os, const Spectrum &s) {
 	return os;
 }
 
-//(dpl)transformation between 'Spectrum' and XYZ
-//**needs to be changed with change in COLOR_SAMPLES
-
-// float Spectrum::XWeight[COLOR_SAMPLES] = {
+// float Spectrum::XWeight[3] = {
 // 	0.412453f, 0.357580f, 0.180423f
 // };
-// float Spectrum::YWeight[COLOR_SAMPLES] = {
-// 	0.212671f, 0.715160f, 0.072169f
-// };
-// float Spectrum::ZWeight[COLOR_SAMPLES] = {
+
+//right now, just taking YWeight to be 1/COLOR_SAMPLES until we have a method
+//for setting YWeight for each change in color sampling
+float Spectrum::YWeight = 1/COLOR_SAMPLES;
+
+// float Spectrum::ZWeight[3] = {
 // 	0.019334f, 0.119193f, 0.950227f
 // };
-
-float Spectrum::XWeight[COLOR_SAMPLES] = {
-	0.3168f
-};
-float Spectrum::YWeight[COLOR_SAMPLES] = {
-	0.3333f
-};
-float Spectrum::ZWeight[COLOR_SAMPLES] = {
-	0.3629f
-};
-
 // Spectrum FromXYZ(float x, float y, float z) {
 // 	float c[3];
 // 	c[0] =  3.240479f * x + -1.537150f * y + -0.498535f * z;
@@ -51,8 +39,6 @@ float Spectrum::ZWeight[COLOR_SAMPLES] = {
 // 	return Spectrum(c);
 // }
 
-
-//(dpl)**need not be changed below here.
 const float Spectrum::CIE_X[Spectrum::nCIE] = {
 	// CIE X function values
 	  0.0001299000f, 0.0001458470f, 0.0001638021f, 0.0001840037f,

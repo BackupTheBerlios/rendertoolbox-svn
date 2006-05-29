@@ -11,7 +11,7 @@
 // image.cpp*
 #include "pbrt.h"
 #include "film.h"
-#include "color_hyp.h"
+#include "color.h"
 #include "paramset.h"
 #include "tonemap.h"
 #include "sampling.h"
@@ -141,103 +141,121 @@ void ImageFilm::GetSampleExtent(int *xstart,
 		filter->yWidth);
 }
 void ImageFilm::WriteImage() {
-	//debug
-	Info("\nImageFilm::WriteImage()\n");
-
-	// Convert image to RGB and compute final pixel values
+	Info("got to write image");
+	//get xyz
 	int nPix = xPixelCount * yPixelCount;
-	float *rgb = new float[3*nPix], *alpha = new float[nPix];
-	//(dpl)
-	float *xyz_save = new float[3*nPix];
-// 	float hyp_save = new float[COLOR_SAMPLES*nPix];
+// 	float *image_xyz= new float[3*nPix];
+	float *image_hyp= new float[COLOR_SAMPLES*nPix];
 	int offset = 0;
+// 	float xyz[3],alpha,weightSum,invWt;
 	for (int y = 0; y < yPixelCount; ++y) {
 		for (int x = 0; x < xPixelCount; ++x) {
-			// Convert pixel spectral radiance to RGB
-			float xyz[3];
-			(*pixels)(x, y).L.XYZ(xyz);
-			xyz_save[3*offset]=xyz[0];
-			xyz_save[3*offset+1]=xyz[1];
-			xyz_save[3*offset+2]=xyz[2];
-			const float
-				rWeight[3] = { 3.240479f, -1.537150f, -0.498535f };
-			const float
-				gWeight[3] = {-0.969256f,  1.875991f,  0.041556f };
-			const float
-				bWeight[3] = { 0.055648f, -0.204043f,  1.057311f };
-			rgb[3*offset  ] = rWeight[0]*xyz[0] +
-			                  rWeight[1]*xyz[1] +
-				              rWeight[2]*xyz[2];
-			rgb[3*offset+1] = gWeight[0]*xyz[0] +
-			                  gWeight[1]*xyz[1] +
-				              gWeight[2]*xyz[2];
-			rgb[3*offset+2] = bWeight[0]*xyz[0] +
-			                  bWeight[1]*xyz[1] +
-				              bWeight[2]*xyz[2];
-			alpha[offset] = (*pixels)(x, y).alpha;
-			// Normalize pixel with weight sum
-			float weightSum = (*pixels)(x, y).weightSum;
-			if (weightSum != 0.f) {
-				float invWt = 1.f / weightSum;
-				rgb[3*offset  ] =
-					Clamp(rgb[3*offset  ] * invWt, 0.f, INFINITY);
-				rgb[3*offset+1] =
-					Clamp(rgb[3*offset+1] * invWt, 0.f, INFINITY);
-				rgb[3*offset+2] =
-					Clamp(rgb[3*offset+2] * invWt, 0.f, INFINITY);
-				alpha[offset] = Clamp(alpha[offset] * invWt, 0.f, 1.f);
-				//(dpl)normalize XYZ pixels as well
-				xyz_save[3*offset  ] =
-					Clamp(xyz_save[3*offset  ] * invWt, 0.f, INFINITY);
-				xyz_save[3*offset+1] =
-					Clamp(xyz_save[3*offset+1] * invWt, 0.f, INFINITY);
-				xyz_save[3*offset+2] =
-					Clamp(xyz_save[3*offset+2] * invWt, 0.f, INFINITY);	
-					
-				//add code to save the hyperspectral data of each pixel to an 
-				//arry and then to be saved to disk so that it can be read by
-				//by matlab and turned into a cone image according to bei's
-				//code. (to do as of 12 sept 2005)
-// 				for(int i=0;i<nPix;++i) {
-// 					hyp_save[COLOR_SAMPLES*offset+i]=
-// 						Clamp(hyp_save
-// 					
+// 			(*pixels)(x, y).L.XYZ(xyz);
+// 			image_xyz[3*offset]=xyz[0];
+// 			image_xyz[3*offset+1]=xyz[1];
+// 			image_xyz[3*offset+2]=xyz[2];
+// 			//alpha
+// 			if (premultiplyAlpha) {
+// 				alpha = (*pixels)(x, y).alpha;
+// 				alpha = Clamp(alpha * invWt, 0.f, 1.f);
+// 				image_xyz[3*offset  ] *= alpha;
+// 				image_xyz[3*offset+1] *= alpha;
+// 				image_xyz[3*offset+2] *= alpha;
+// 			}
+// 			//weighted sum
+// 			weightSum = (*pixels)(x, y).weightSum;
+// 			if (weightSum != 0.f) {
+// 				invWt = 1.f / weightSum;
+// 				image_xyz[3*offset  ] =
+// 					Clamp(image_xyz[3*offset  ] * invWt, 0.f, INFINITY);
+// 				image_xyz[3*offset+1] =
+// 					Clamp(image_xyz[3*offset+1] * invWt, 0.f, INFINITY);
+// 				image_xyz[3*offset+2] =
+// 					Clamp(image_xyz[3*offset+2] * invWt, 0.f, INFINITY);
+// 			}
+
+			//save hyperspectral
+			float* spec;
+			spec=(*pixels)(x,y).L.GetSpectrum();
+			for(int i = 0; i < COLOR_SAMPLES; ++i) {
+				image_hyp[COLOR_SAMPLES*offset+i]=spec[i];
 			}
-			// Compute premultiplied alpha color
-			if (premultiplyAlpha) {
-				rgb[3*offset  ] *= alpha[offset];
-				rgb[3*offset+1] *= alpha[offset];
-				rgb[3*offset+2] *= alpha[offset];
-			}
-			++offset;
+			offset++;
 		}
 	}
-	// Write RGBA image
-	Info("not writing exr image\n");
+	
+	//save
+	Info("saving file, num pixels %d",offset);
+	Info("color samples %d", COLOR_SAMPLES);
+	FILE *fp;
+// 	fp=fopen("image_xyz.dat","wb");
+// 	fwrite(image_xyz,sizeof("float"),3*nPix*sizeof("float"),fp);	
+// 	fclose(fp);
+	fp=fopen("image_hyp.dat","wb");
+	fwrite(image_hyp,sizeof("float"),COLOR_SAMPLES*nPix*sizeof("float"),fp);
+	fclose(fp);
+	
+	
+	
+			
+			
+
+
+// Convert image to RGB and compute final pixel values
+// 	int nPix = xPixelCount * yPixelCount;
+// 	float *rgb = new float[3*nPix], *alpha = new float[nPix]; 
+// 	int offset = 0;
+// 	for (int y = 0; y < yPixelCount; ++y) {
+// 		for (int x = 0; x < xPixelCount; ++x) {
+// 			// Convert pixel spectral radiance to RGB
+// 			float xyz[3];
+// 			(*pixels)(x, y).L.XYZ(xyz);
+// 			const float
+// 				rWeight[3] = { 3.240479f, -1.537150f, -0.498535f };
+// 			const float
+// 				gWeight[3] = {-0.969256f,  1.875991f,  0.041556f };
+// 			const float
+// 				bWeight[3] = { 0.055648f, -0.204043f,  1.057311f };
+// 			rgb[3*offset  ] = rWeight[0]*xyz[0] +
+// 			                  rWeight[1]*xyz[1] +
+// 				              rWeight[2]*xyz[2];
+// 			rgb[3*offset+1] = gWeight[0]*xyz[0] +
+// 			                  gWeight[1]*xyz[1] +
+// 				              gWeight[2]*xyz[2];
+// 			rgb[3*offset+2] = bWeight[0]*xyz[0] +
+// 			                  bWeight[1]*xyz[1] +
+// 				              bWeight[2]*xyz[2];
+// 			alpha[offset] = (*pixels)(x, y).alpha;
+// 			// Normalize pixel with weight sum
+// 			float weightSum = (*pixels)(x, y).weightSum;
+// 			if (weightSum != 0.f) {
+// 				float invWt = 1.f / weightSum;
+// 				rgb[3*offset  ] =
+// 					Clamp(rgb[3*offset  ] * invWt, 0.f, INFINITY);
+// 				rgb[3*offset+1] =
+// 					Clamp(rgb[3*offset+1] * invWt, 0.f, INFINITY);
+// 				rgb[3*offset+2] =
+// 					Clamp(rgb[3*offset+2] * invWt, 0.f, INFINITY);
+// 				alpha[offset] = Clamp(alpha[offset] * invWt, 0.f, 1.f);
+// 			}
+// 			// Compute premultiplied alpha color
+// 			if (premultiplyAlpha) {
+// 				rgb[3*offset  ] *= alpha[offset];
+// 				rgb[3*offset+1] *= alpha[offset];
+// 				rgb[3*offset+2] *= alpha[offset];
+// 			}
+// 			++offset;
+// 		}
+// 	}
+// 	// Write RGBA image
 // 	WriteRGBAImage(filename, rgb, alpha,
 // 		xPixelCount, yPixelCount,
 // 		xResolution, yResolution,
 // 		xPixelStart, yPixelStart);
-	// Release temporary image memory
-	
-	//(dpl)write rgb and xyz data to disk and see if we can read it into matlab
-	Info("\n\nwriting test output file");
-// 	Info("nPix = %d. size of a pixel: %d\n\n", nPix, sizeof(rgb[0]));
-	FILE *fp;
-	fp=fopen("test_rgb.dat","wb");
-		fwrite(rgb,sizeof(rgb[0]),3*nPix*sizeof(rgb[0]),fp);	
-	fclose(fp);
-	fp=fopen("test_xyz.dat","wb");
-	fwrite(xyz_save,sizeof(xyz_save[0]),3*nPix*sizeof(xyz_save[0]),fp);	
-	fclose(fp);
-
-	
-	
-	delete[] alpha;
-	delete[] rgb;
+// 	// Release temporary image memory
+// 	delete[] alpha;
+// 	delete[] rgb;
 }
-
-
 extern "C" DLLEXPORT Film *CreateFilm(const ParamSet &params, Filter *filter)
 {
 	string filename = params.FindOneString("filename", "pbrt.exr");

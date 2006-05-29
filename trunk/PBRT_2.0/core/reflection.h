@@ -345,22 +345,22 @@ private:
 
 
 // commented, dpl 10 august 2005
-class COREDLL Lafortune : public BxDF {
-public:
-	// Lafortune Public Methods
-	Lafortune(const Spectrum &r, u_int nl,
-	          const Spectrum *x, const Spectrum *y, const Spectrum *z,
-			  const Spectrum *e, BxDFType t);
-	Spectrum f(const Vector &wo, const Vector &wi) const;
-	Spectrum Sample_f(const Vector &wi, Vector *sampled_f,
-		float u1, float u2, float *pdf) const;
-	float Pdf(const Vector &wi, const Vector &wo) const;
-private:
-	// Lafortune Private Data
-	Spectrum R;
-	u_int nLobes;
-	const Spectrum *x, *y, *z, *exponent;
-};
+// class COREDLL Lafortune : public BxDF {
+// public:
+// 	// Lafortune Public Methods
+// 	Lafortune(const Spectrum &r, u_int nl,
+// 	          const Spectrum *x, const Spectrum *y, const Spectrum *z,
+// 			  const Spectrum *e, BxDFType t);
+// 	Spectrum f(const Vector &wo, const Vector &wi) const;
+// 	Spectrum Sample_f(const Vector &wi, Vector *sampled_f,
+// 		float u1, float u2, float *pdf) const;
+// 	float Pdf(const Vector &wi, const Vector &wo) const;
+// private:
+// 	// Lafortune Private Data
+// 	Spectrum R;
+// 	u_int nLobes;
+// 	const Spectrum *x, *y, *z, *exponent;
+// };
 
 
 // commented, dpl 10 august 2005

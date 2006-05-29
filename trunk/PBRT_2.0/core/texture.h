@@ -12,7 +12,7 @@
 #define PBRT_TEXTURE_H
 // texture.h*
 #include "pbrt.h"
-#include "color_hyp.h"
+#include "color.h"
 #include "geometry.h"
 #include "transform.h"
 // Texture Declarations

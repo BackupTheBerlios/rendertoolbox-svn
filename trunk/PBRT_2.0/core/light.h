@@ -14,7 +14,7 @@
 #include "pbrt.h"
 #include "geometry.h"
 #include "transform.h"
-#include "color_hyp.h"
+#include "color.h"
 #include "paramset.h"
 #include "mc.h"
 // Light Declarations

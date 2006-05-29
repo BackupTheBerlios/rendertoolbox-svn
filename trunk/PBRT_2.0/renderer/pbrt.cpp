@@ -1,5 +1,4 @@
 
-
 /*
  * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
  *
@@ -10,28 +9,22 @@
  */
 
 // pbrt.cpp*
+#define MAIN
 #include "pbrt.h"
 #include "api.h"
 
-//int COLOR_SAMPLES;
+
 
 // main program
 int main(int argc, char *argv[]) {
-
-	//COLOR_SAMPLES
-	//COLOR_SAMPLES=31;
-
-	printf("COLOR_SAMPLES=%d\n",COLOR_SAMPLES);
-
 	// Print welcome banner
 	printf("pbrt version %1.3f of %s at %s\n",
 	       PBRT_VERSION, __DATE__, __TIME__);
 	printf("Copyright (c)1998-2005 Matt Pharr and "
 	       "Greg Humphreys.\n");
 	printf("For educational use only; commercial use expressly forbidden.\n");
-	
-	//dpl
-	printf("\n\n ***(dpl)hyperspectral test version\n");
+
+	COLOR_SAMPLES=31;	
 	
 	fflush(stdout);
 	pbrtInit();
@@ -46,5 +39,6 @@ int main(int argc, char *argv[]) {
 				Error("Couldn't open scene file \"%s\"\n", argv[i]);
 	}
 	pbrtCleanup();
+	
 	return 0;
 }

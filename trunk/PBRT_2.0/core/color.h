@@ -17,10 +17,12 @@ class COREDLL Spectrum {
 public:
 	// Spectrum Public Methods
 	Spectrum(float v = 0.f) {
+		c=new float[COLOR_SAMPLES];
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			c[i] = v;
 	}
-	Spectrum(float cs[COLOR_SAMPLES]) {
+	Spectrum(float cs[]) {
+		c=new float[COLOR_SAMPLES];
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			c[i] = cs[i];
 	}
@@ -140,28 +142,32 @@ public:
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			fprintf(f, "%f ", c[i]);
 	}
-	void XYZ(float xyz[3]) const {
-		xyz[0] = xyz[1] = xyz[2] = 0.;
-		for (int i = 0; i < COLOR_SAMPLES; ++i) {
-			xyz[0] += XWeight[i] * c[i];
-			xyz[1] += YWeight[i] * c[i];
-			xyz[2] += ZWeight[i] * c[i];
-		}
-	}
+// 	void XYZ(float xyz[3]) const {
+// 		xyz[0] = xyz[1] = xyz[2] = 0.;
+// 		for (int i = 0; i < COLOR_SAMPLES; ++i) {
+// 			xyz[0] += XWeight[i] * c[i];
+// 			xyz[1] += YWeight[i] * c[i];
+// 			xyz[2] += ZWeight[i] * c[i];
+// 		}
+// 	}
 	float y() const {
 		float v = 0.;
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
-			v += YWeight[i] * c[i];
+			v += YWeight * c[i];
 		return v;
 	}
-	bool operator<(const Spectrum &s2) const {
-		return y() < s2.y();
+// 	bool operator<(const Spectrum &s2) const {
+// 		return y() < s2.y();
+// 	}
+	
+	//dan
+	float* GetSpectrum() {
+		return c;
 	}
+	
 	friend class ParamSet;
 	
 	// Spectrum Public Data
-	//(dpl)standard spd of X,Y and Z color dimentions
-	//doesn't depend on COLOR_SAMPLES
 	static const int CIEstart = 360;
 	static const int CIEend = 830;
 	static const int nCIE = CIEend-CIEstart+1;
@@ -170,13 +176,10 @@ public:
 	static const float CIE_Z[nCIE];
 private:
 	// Spectrum Private Data
-	//(dpl)transformation between 'Spectrum' representation with
-	//COLOR_SAMPLES number of samples to XYZ.
-	//**needs to be redefined if we change COLOR_SAMPLES
-	float c[COLOR_SAMPLES];
-	static float XWeight[COLOR_SAMPLES];
-	static float YWeight[COLOR_SAMPLES];
-	static float ZWeight[COLOR_SAMPLES];
+	float *c;
+// 	static float XWeight[3];
+	static float YWeight;
+// 	static float ZWeight[3];
 // 	friend Spectrum FromXYZ(float x, float y, float z);
 };
 #endif // PBRT_COLOR_H

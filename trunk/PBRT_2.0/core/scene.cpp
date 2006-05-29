@@ -28,12 +28,11 @@ void Scene::Render() {
 	volumeIntegrator->Preprocess(this);
 	// Trace rays: The main loop
 	ProgressReporter progress(sampler->TotalSamples(), "Rendering");
-	Info("Render: going through samples");
 	while (sampler->GetNextSample(sample)) {
-		Info("// Find camera ray for _sample_");
+		// Find camera ray for _sample_"
 		RayDifferential ray;
 		float rayWeight = camera->GenerateRay(*sample, &ray);
-		Info("// Generate ray differentials for camera ray");
+		// Generate ray differentials for camera ray
 		++(sample->imageX);
 		camera->GenerateRay(*sample, &ray.rx);
 		--(sample->imageX);
@@ -41,16 +40,15 @@ void Scene::Render() {
 		camera->GenerateRay(*sample, &ray.ry);
 		ray.hasDifferentials = true;
 		--(sample->imageY);
-		Info("// Evaluate radiance along camera ray");
+		// Evaluate radiance along camera ray
 		float alpha;
-		Info("declare spectrum");
+		//declare spectrum
 		Spectrum Ls = 0.f;
-		Info("check rayWeight");
+		//check rayWeight
 		if (rayWeight > 0.f) {
 			Ls = rayWeight * Li(ray, sample, &alpha); 
-			Info("finished check");
 		}
-		Info("// Issue warning if unexpected radiance value returned");
+		// Issue warning if unexpected radiance value returned
 		if (Ls.IsNaN()) {
 			Error("Not-a-number radiance value returned "
 		          "for image sample.  Setting to black.");
@@ -65,18 +63,16 @@ void Scene::Render() {
 			Error("Infinite luminance value returned "
 		          "for image sample.  Setting to black.");
 			Ls = Spectrum(0.f);
-		}
-		Info("// Add sample contribution to image");
+ 		}
+		// Add sample contribution to image
 		camera->film->AddSample(*sample, ray, Ls, alpha);
-		Info("// Free BSDF memory from computing image sample value");
+		// Free BSDF memory from computing image sample value
 		BSDF::FreeAll();
-		Info("// Report rendering progress");
+		// Report rendering progress
 		static StatsCounter cameraRaysTraced("Camera", "Camera Rays Traced");
 		++cameraRaysTraced;
 		progress.Update();
-		Info("Render: Finished first sample");
 	}
-	Info("Render:finsihed taking samples");
 	// Clean up after rendering and store final image
 	delete sample;
 	progress.Done();

@@ -14,7 +14,7 @@
 #include "pbrt.h"
 #include "geometry.h"
 #include "texture.h"
-#include "color_hyp.h"
+#include "color.h"
 #include <map>
 using std::map;
 // ParamSet Macros

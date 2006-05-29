@@ -12,7 +12,7 @@
 #define PBRT_VOLUME_H
 // volume.h*
 #include "pbrt.h"
-#include "color_hyp.h"
+#include "color.h"
 #include "geometry.h"
 #include "paramset.h"
 #include "transform.h"
