@@ -141,38 +141,12 @@ void ImageFilm::GetSampleExtent(int *xstart,
 		filter->yWidth);
 }
 void ImageFilm::WriteImage() {
-	Info("got to write image");
-	//get xyz
 	int nPix = xPixelCount * yPixelCount;
-// 	float *image_xyz= new float[3*nPix];
 	float *image_hyp= new float[COLOR_SAMPLES*nPix];
+	float weightSum, invWt, alpha;
 	int offset = 0;
-// 	float xyz[3],alpha,weightSum,invWt;
 	for (int y = 0; y < yPixelCount; ++y) {
 		for (int x = 0; x < xPixelCount; ++x) {
-// 			(*pixels)(x, y).L.XYZ(xyz);
-// 			image_xyz[3*offset]=xyz[0];
-// 			image_xyz[3*offset+1]=xyz[1];
-// 			image_xyz[3*offset+2]=xyz[2];
-// 			//alpha
-// 			if (premultiplyAlpha) {
-// 				alpha = (*pixels)(x, y).alpha;
-// 				alpha = Clamp(alpha * invWt, 0.f, 1.f);
-// 				image_xyz[3*offset  ] *= alpha;
-// 				image_xyz[3*offset+1] *= alpha;
-// 				image_xyz[3*offset+2] *= alpha;
-// 			}
-// 			//weighted sum
-// 			weightSum = (*pixels)(x, y).weightSum;
-// 			if (weightSum != 0.f) {
-// 				invWt = 1.f / weightSum;
-// 				image_xyz[3*offset  ] =
-// 					Clamp(image_xyz[3*offset  ] * invWt, 0.f, INFINITY);
-// 				image_xyz[3*offset+1] =
-// 					Clamp(image_xyz[3*offset+1] * invWt, 0.f, INFINITY);
-// 				image_xyz[3*offset+2] =
-// 					Clamp(image_xyz[3*offset+2] * invWt, 0.f, INFINITY);
-// 			}
 
 			//save hyperspectral
 			float* spec;
@@ -180,6 +154,26 @@ void ImageFilm::WriteImage() {
 			for(int i = 0; i < COLOR_SAMPLES; ++i) {
 				image_hyp[COLOR_SAMPLES*offset+i]=spec[i];
 			}
+
+			//weighted sum
+			weightSum = (*pixels)(x, y).weightSum;
+			if (weightSum != 0.f) {
+				invWt = 1.f / weightSum;
+				for(int i = 0; i< COLOR_SAMPLES; ++i) {
+					image_hyp[COLOR_SAMPLES*offset+i] = 
+						Clamp(image_hyp[COLOR_SAMPLES*offset+i] * invWt, 0.f, INFINITY);
+				}
+			}
+
+			//alpha
+			if (premultiplyAlpha && (weightSum != 0.f)) {
+				alpha = (*pixels)(x,y).alpha;
+				alpha = Clamp(alpha * invWt, 0.f, 1.f);
+				for(int i = 0; i< COLOR_SAMPLES; ++i) {
+					image_hyp[COLOR_SAMPLES*offset+i] *= alpha;
+				}
+			}
+		
 			offset++;
 		}
 	}
@@ -188,9 +182,6 @@ void ImageFilm::WriteImage() {
 	Info("saving file, num pixels %d",offset);
 	Info("color samples %d", COLOR_SAMPLES);
 	FILE *fp;
-// 	fp=fopen("image_xyz.dat","wb");
-// 	fwrite(image_xyz,sizeof("float"),3*nPix*sizeof("float"),fp);	
-// 	fclose(fp);
 	fp=fopen("image_hyp.dat","wb");
 	fwrite(image_hyp,sizeof("float"),COLOR_SAMPLES*nPix*sizeof("float"),fp);
 	fclose(fp);

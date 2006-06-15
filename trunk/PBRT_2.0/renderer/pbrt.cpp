@@ -17,6 +17,9 @@
 
 // main program
 int main(int argc, char *argv[]) {
+
+	COLOR_SAMPLES=18;
+
 	// Print welcome banner
 	printf("pbrt version %1.3f of %s at %s\n",
 	       PBRT_VERSION, __DATE__, __TIME__);
@@ -24,7 +27,6 @@ int main(int argc, char *argv[]) {
 	       "Greg Humphreys.\n");
 	printf("For educational use only; commercial use expressly forbidden.\n");
 
-	COLOR_SAMPLES=31;	
 	
 	fflush(stdout);
 	pbrtInit();

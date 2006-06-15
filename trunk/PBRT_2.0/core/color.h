@@ -16,6 +16,18 @@
 class COREDLL Spectrum {
 public:
 	// Spectrum Public Methods
+	
+//	(dpl) statis methods
+// 	Spectrum(float v = 0.f) {
+//                 for (int i = 0; i < COLOR_SAMPLES; ++i)
+//                         c[i] = v;
+//         }
+//         Spectrum(float cs[COLOR_SAMPLES]) {
+//                 for (int i = 0; i < COLOR_SAMPLES; ++i)
+//                         c[i] = cs[i];
+//         }
+
+//	(dpl) flexible methods
 	Spectrum(float v = 0.f) {
 		c=new float[COLOR_SAMPLES];
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
@@ -26,6 +38,8 @@ public:
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			c[i] = cs[i];
 	}
+//
+	
 	friend ostream &operator<<(ostream &, const Spectrum &);
 	Spectrum &operator+=(const Spectrum &s2) {
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
@@ -176,7 +190,13 @@ public:
 	static const float CIE_Z[nCIE];
 private:
 	// Spectrum Private Data
+//	(dpl) static declaration
+// 	float c[COLOR_SAMPLES];
+	
+//	(dpl) flexible declaration
 	float *c;
+
+//	(dpl) don't need X and Y weight
 // 	static float XWeight[3];
 	static float YWeight;
 // 	static float ZWeight[3];

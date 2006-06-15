@@ -24,9 +24,10 @@ ostream &operator<<(ostream &os, const Spectrum &s) {
 // 	0.412453f, 0.357580f, 0.180423f
 // };
 
-//right now, just taking YWeight to be 1/COLOR_SAMPLES until we have a method
+//(dpl)right now, just taking YWeight to be 1/COLOR_SAMPLES until we have a method
 //for setting YWeight for each change in color sampling
-float Spectrum::YWeight = 1/COLOR_SAMPLES;
+float Spectrum::YWeight = (1/COLOR_SAMPLES);
+// float Spectrum::YWeight = 1;
 
 // float Spectrum::ZWeight[3] = {
 // 	0.019334f, 0.119193f, 0.950227f

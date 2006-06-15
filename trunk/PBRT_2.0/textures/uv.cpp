@@ -25,7 +25,8 @@ public:
 	Spectrum Evaluate(const DifferentialGeometry &dg) const {
 		float s, t, dsdx, dtdx, dsdy, dtdy;
 		mapping->Map(dg, &s, &t, &dsdx, &dtdx, &dsdy, &dtdy);
-		float cs[COLOR_SAMPLES];
+		//(dpl)=changed this to allow for non constant COLOR_SAMPLES
+		float *cs = new float[COLOR_SAMPLES];
 		memset(cs, 0, COLOR_SAMPLES * sizeof(float));
 		cs[0] = s - Floor2Int(s);
 		cs[1] = t - Floor2Int(t);

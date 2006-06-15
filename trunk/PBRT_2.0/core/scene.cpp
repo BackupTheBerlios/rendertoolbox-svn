@@ -17,8 +17,7 @@
 #include "volume.h"
 // Scene Methods
 void Scene::Render() {
-	Info("Start Render");
-
+	Info("Scene:Render");
 	// Allocate and initialize _sample_
 	Sample *sample = new Sample(surfaceIntegrator,
 	                            volumeIntegrator,
