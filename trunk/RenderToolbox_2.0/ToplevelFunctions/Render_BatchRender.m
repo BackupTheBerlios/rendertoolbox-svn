@@ -73,7 +73,7 @@ cd ..;
 
 
 %read from lights file
-lightProperties=ReadStructsFromText('lightProperties.txt');
+lightProperties=Parameters_ReadStructsFromTabText('lightProperties.txt');
 numLights=length(lightProperties);   
 
 %check to make sure we have required fields in lights file

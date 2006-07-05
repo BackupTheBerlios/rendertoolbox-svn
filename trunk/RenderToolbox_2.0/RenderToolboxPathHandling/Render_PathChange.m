@@ -10,7 +10,7 @@ function Render_PathChange(version)
 %hard code paths to different versions
 %**(can make this smarter sometime)
 % versionPaths{1}=%fill in the rest of this path: '/repos/rendertoolbox/branches/RenderToolbox_1.0';
-% versionPaths{2}=%fill in the rest of this path: /repos/rendertoolbox/trunk/RenderToolbox_2.0';
+versionPaths{2}='/Users/dan/work/repos/rendertoolbox/trunk/RenderToolbox_2.0';
 
 
 
