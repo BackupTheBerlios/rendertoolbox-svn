@@ -3,7 +3,7 @@ Camera "perspective" "float fov" [30]
 PixelFilter "mitchell" "float xwidth" [2] "float ywidth" [2]
 Sampler "bestcandidate"
 Film "image" "string filename" ["simple.exr"]
-     "integer xresolution" [200] "integer yresolution" [200]
+     "integer xresolution" [100] "integer yresolution" [100]
 
 WorldBegin
 
@@ -11,7 +11,7 @@ AttributeBegin
   CoordSysTransform "camera"
   LightSource "distant" 
               "point from" [0 0 0] "point to"   [0 0 1]
-              "color L"    [3 3 3]
+              "color L"    [3]
 AttributeEnd
 
 AttributeBegin
@@ -19,7 +19,7 @@ AttributeBegin
   
   Texture "checks" "color" "checkerboard" 
           "float uscale" [4] "float vscale" [4] 
-          "color tex1" [1 0 0] "color tex2" [0 0 1]
+          "color tex1" [1] "color tex2" [.5]
   
   Material "matte" 
            "texture Kd" "checks"

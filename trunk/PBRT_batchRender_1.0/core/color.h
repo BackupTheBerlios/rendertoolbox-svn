@@ -18,12 +18,14 @@ public:
 	// Spectrum Public Methods
 	Spectrum(float v = 0.f) {
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
-			c[i] = v;
-	}
-	Spectrum(float cs[COLOR_SAMPLES]) {
+			 c[i] = v;
+	 }
+	 Spectrum(float cs[COLOR_SAMPLES]) {
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
-			c[i] = cs[i];
-	}
+			 c[i] = cs[i];
+	 }
+
+	
 	friend ostream &operator<<(ostream &, const Spectrum &);
 	Spectrum &operator+=(const Spectrum &s2) {
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
@@ -140,23 +142,33 @@ public:
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			fprintf(f, "%f ", c[i]);
 	}
-	void XYZ(float xyz[3]) const {
-		xyz[0] = xyz[1] = xyz[2] = 0.;
-		for (int i = 0; i < COLOR_SAMPLES; ++i) {
-			xyz[0] += XWeight[i] * c[i];
-			xyz[1] += YWeight[i] * c[i];
-			xyz[2] += ZWeight[i] * c[i];
-		}
-	}
+	
+//(dpl) take out xyz because we will do this processing in matlab
+// 	void XYZ(float xyz[3]) const {
+// 		xyz[0] = xyz[1] = xyz[2] = 0.;
+// 		for (int i = 0; i < COLOR_SAMPLES; ++i) {
+// 			xyz[0] += XWeight[i] * c[i];
+// 			xyz[1] += YWeight[i] * c[i];
+// 			xyz[2] += ZWeight[i] * c[i];
+// 		}
+// 	}
 	float y() const {
 		float v = 0.;
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
-			v += YWeight[i] * c[i];
+			v += YWeight * c[i];
 		return v;
 	}
-	bool operator<(const Spectrum &s2) const {
-		return y() < s2.y();
+
+//(dpl) this too
+// 	bool operator<(const Spectrum &s2) const {
+// 		return y() < s2.y();
+// 	}
+	
+	//(dpl)return value of spectrum at this point. assumes COLOR_SAMPLES=1
+	float GetSpectrum() {
+		return c[0];
 	}
+	
 	friend class ParamSet;
 	
 	// Spectrum Public Data
@@ -168,10 +180,12 @@ public:
 	static const float CIE_Z[nCIE];
 private:
 	// Spectrum Private Data
-	float c[COLOR_SAMPLES];
-	static float XWeight[COLOR_SAMPLES];
-	static float YWeight[COLOR_SAMPLES];
-	static float ZWeight[COLOR_SAMPLES];
-	friend Spectrum FromXYZ(float x, float y, float z);
+ 	float c[COLOR_SAMPLES];
+
+//	(dpl) don't need X and Z weight
+// 	static float XWeight[3];
+	static float YWeight;
+// 	static float ZWeight[3];
+// 	friend Spectrum FromXYZ(float x, float y, float z);
 };
 #endif // PBRT_COLOR_H

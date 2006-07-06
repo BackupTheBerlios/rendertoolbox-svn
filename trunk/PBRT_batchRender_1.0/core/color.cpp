@@ -19,22 +19,30 @@ ostream &operator<<(ostream &os, const Spectrum &s) {
 	}
 	return os;
 }
-float Spectrum::XWeight[COLOR_SAMPLES] = {
-	0.412453f, 0.357580f, 0.180423f
-};
-float Spectrum::YWeight[COLOR_SAMPLES] = {
-	0.212671f, 0.715160f, 0.072169f
-};
-float Spectrum::ZWeight[COLOR_SAMPLES] = {
-	0.019334f, 0.119193f, 0.950227f
-};
-Spectrum FromXYZ(float x, float y, float z) {
-	float c[3];
-	c[0] =  3.240479f * x + -1.537150f * y + -0.498535f * z;
-	c[1] = -0.969256f * x +  1.875991f * y +  0.041556f * z;
-	c[2] =  0.055648f * x + -0.204043f * y +  1.057311f * z;
-	return Spectrum(c);
-}
+
+// float Spectrum::XWeight[3] = {
+// 	0.412453f, 0.357580f, 0.180423f
+// };
+
+//(dpl) setting YWeight to be the sum of the components for R G and B
+//for now this is taken from http://semmix.pl/color/extrans/etr80p3.htm
+//this should equal one
+float Spectrum::YWeight=1;
+
+//(dpl) don't need these either
+// float Spectrum::ZWeight[3] = {
+// 	0.019334f, 0.119193f, 0.950227f
+// };
+
+//(dpl) don't need this either
+// Spectrum FromXYZ(float x, float y, float z) {
+// 	float c[3];
+// 	c[0] =  3.240479f * x + -1.537150f * y + -0.498535f * z;
+// 	c[1] = -0.969256f * x +  1.875991f * y +  0.041556f * z;
+// 	c[2] =  0.055648f * x + -0.204043f * y +  1.057311f * z;
+// 	return Spectrum(c);
+// }
+
 const float Spectrum::CIE_X[Spectrum::nCIE] = {
 	// CIE X function values
 	  0.0001299000f, 0.0001458470f, 0.0001638021f, 0.0001840037f,

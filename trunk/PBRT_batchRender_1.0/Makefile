@@ -11,7 +11,7 @@ EXRINCLUDE=OpenEXR/include
 EXRLIBS=-lIlmImf -lImath -lIex -lHalf -lz
 
 CXX=g++
-OPT=-O2
+OPT=-O2 -g
 INCLUDE=-I. -Icore -I$(EXRINCLUDE)
 WARN=-Wall
 CWD=$(shell pwd)
