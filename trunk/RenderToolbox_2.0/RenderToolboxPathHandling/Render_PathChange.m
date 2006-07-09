@@ -13,7 +13,6 @@ function Render_PathChange(version)
 versionPaths{2}='/Users/dan/work/repos/rendertoolbox/trunk/RenderToolbox_2.0';
 
 
-
 %put the whole path into a cell of strings
 fullMatlabPath=matlabpath;
 currentPosition=1;

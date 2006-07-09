@@ -19,7 +19,7 @@ AttributeBegin
   
   Texture "checks" "color" "checkerboard" 
           "float uscale" [4] "float vscale" [4] 
-          "color tex1" [1] "color tex2" [.5]
+          "color tex1" [1] "color tex2" [2]
   
   Material "matte" 
            "texture Kd" "checks"

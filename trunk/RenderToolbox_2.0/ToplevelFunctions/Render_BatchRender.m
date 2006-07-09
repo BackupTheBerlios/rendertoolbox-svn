@@ -152,16 +152,19 @@ for currentConditionNumber=1:numConditions
 % 	try
         display(['**Current condition: ' allConditions(currentConditionNumber).sceneName ...
             ', ' datestr(now)]);
+        %link the objectProperties and lightProperties to condition dependant
+        %parameter stored in the conditions files in order to pass them to
+        %RenderRoom
+        [objectMaterialParams lightMaterialParams currentConditions] = ...
+            Render_ProcessMaterialProps(objectProperties,lightProperties,allConditions(currentConditionNumber));
         switch(allConditions(currentConditionNumber).renderer)
             case 'radiance'
-                %link the objectProperties and lightProperties to condition dependant
-                %parameter stored in the conditions files in order to pass them to
-                %RenderRoom
-                [objectMaterialParams lightMaterialParams currentConditions] = ...
-                    Render_ProcessMaterialProps(objectProperties,lightProperties,allConditions(currentConditionNumber));
                 %note: we must be in the experiment directory for this function to
                 %work.
                 Render_RenderRadiance(currentConditions,objectMaterialParams,lightMaterialParams,rendererParams);
+            case 'pbrt'
+                display('rendering pbrt...');
+                Render_RenderPBRT(currentConditions,objectMaterialParams,lightMaterialParams);
             otherwise
                 error('Only the radiance renderer is currently supported.');
         end
