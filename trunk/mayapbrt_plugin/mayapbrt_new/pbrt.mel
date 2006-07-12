@@ -1,0 +1,21 @@
+//
+// Mark Colbert
+// 
+// The following assumes that the pbrt plugins are on auto load and have already been loaded into Maya.
+// Additionally, the user must set the approprate pbrt search path for the plugins to work properly.
+
+putenv "PBRT_SEARCHPATH" "/Users/colbert/Programs/pbrt/bin";
+putenv "PATH" (`getenv "PATH"` + ":" + `getenv "PBRT_SEARCHPATH"`);
+
+global proc pbrtRender(string $width, string $height, string $arg3, string $arg4, string $cameraname ) {
+	string $location = `workspace -q -rd`;
+	string $output = $location + "/temp.pbrt";
+	string $tga = $location + "/pbrt.tga";
+	pbrtexport $output $tga;
+	LaunchPBRT ($output);
+	PBRTView $tga;
+}
+
+renderer -rendererUIName "PBRT Renderer"
+		 -renderProcedure "pbrtRender"
+		 pbrt;

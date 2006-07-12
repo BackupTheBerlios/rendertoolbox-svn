@@ -1,0 +1,1 @@
+/Applications/Alias/maya7.0/devkit/include/maya/OpenMayaMac.h

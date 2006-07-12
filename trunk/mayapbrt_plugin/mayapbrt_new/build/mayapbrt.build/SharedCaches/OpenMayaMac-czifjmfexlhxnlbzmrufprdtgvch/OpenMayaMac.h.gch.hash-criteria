@@ -1,0 +1,22 @@
+/Applications/Alias/maya7.0/devkit/include/maya/OpenMayaMac.h
+4.0.0 20041026 (Apple Computer, Inc. build 4061)
+-x
+c++
+-arch
+ppc
+-pipe
+-Wno-trigraphs
+-fpascal-strings
+-fasm-blocks
+-g
+-O0
+-DMAC_PLUGIN
+-D_BOOL
+-DOSMac_
+-fmessage-length=0
+-mtune=G4
+-mfix-and-continue
+-Wmost
+-F/Users/dan/work/pbrt/plugin/mayapbrt_new/build
+-I/Users/dan/work/pbrt/plugin/mayapbrt_new/build/include
+-I/Applications/Alias/maya7.0/devkit/include

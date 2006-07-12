@@ -9,25 +9,16 @@
  */
 
 // pbrt.cpp*
-#define MAIN
 #include "pbrt.h"
 #include "api.h"
-
-
-
 // main program
 int main(int argc, char *argv[]) {
-
-	COLOR_SAMPLES=18;
-
 	// Print welcome banner
 	printf("pbrt version %1.3f of %s at %s\n",
 	       PBRT_VERSION, __DATE__, __TIME__);
 	printf("Copyright (c)1998-2005 Matt Pharr and "
 	       "Greg Humphreys.\n");
 	printf("For educational use only; commercial use expressly forbidden.\n");
-
-	
 	fflush(stdout);
 	pbrtInit();
 	// Process scene description
@@ -41,6 +32,5 @@ int main(int argc, char *argv[]) {
 				Error("Couldn't open scene file \"%s\"\n", argv[i]);
 	}
 	pbrtCleanup();
-	
 	return 0;
 }

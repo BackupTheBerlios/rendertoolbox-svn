@@ -1,0 +1,13 @@
+function Render_RenderPBRTScripts
+
+%now render files
+%%debug
+rerender=false;
+if rerender
+    display('   rendering with pbrt...');
+    for currentWavelength=1:numWavelengths
+        currentFileName=fileNames{currentWavelength};
+        cmd=['pbrt ' currentFileName '.dat ' currentFileName '.pbrt' ];
+        unix(cmd);
+    end
+end %rerender

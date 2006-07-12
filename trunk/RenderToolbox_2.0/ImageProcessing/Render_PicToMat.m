@@ -1,4 +1,4 @@
-function [picMat] = Render_PicToMat(currentConditions) 
+    function [picMat] = Render_PicToMat(currentConditions) 
 %  [picMat] = Render_PicToMat(currentConditions) 
 % 
 % Change the rendered image into an image matrix.

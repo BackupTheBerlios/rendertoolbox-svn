@@ -191,8 +191,22 @@ class VolumeIntegrator;
 #endif
 #define PBRT_VERSION 1.02
 #define RAY_EPSILON 1e-3f
-//(dpl)make color samples 1 so that we can run pbrt once for each wavelength
 #define COLOR_SAMPLES 1
+
+//output file name
+#ifdef OUTPUT_DEF 
+	char* OUTPUT_NAME;
+#else 
+	extern char* OUTPUT_NAME; 
+#endif
+
+
+// #ifdef MAIN 
+//        int COLOR_SAMPLES;
+// #else 
+//        extern int COLOR_SAMPLES; 
+// #endif
+
 // Global Function Declarations
 // Setup printf format
 #ifdef __GNUG__

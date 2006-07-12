@@ -1,0 +1,22 @@
+/Applications/Alias/maya7.0/devkit/include/maya/OpenMayaMac.h
+3.3 20030304 (Apple Computer, Inc. build 1809)
+-x
+c++
+-arch
+ppc
+-pipe
+-Wno-trigraphs
+-fpascal-strings
+-fasm-blocks
+-g
+-O0
+-DMAC_PLUGIN
+-D_BOOL
+-DOSMac_
+-fmessage-length=0
+-ffix-and-continue
+-mtune=G4
+-Wmost
+-F/Users/dan/work/pbrt/plugin/mayapbrt_new/build
+-I/Users/dan/work/pbrt/plugin/mayapbrt_new/build/include
+-I/Applications/Alias/maya7.0/devkit/include

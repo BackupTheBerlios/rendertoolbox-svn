@@ -149,6 +149,9 @@ void ImageFilm::WriteImage() {
 		for (int x = 0; x < xPixelCount; ++x) {
 
 			//save hyperspectral
+			//(note that spec is a float now, not an array, so the following
+			//code segment will only work when GetSpectrum returns a single
+			//float when COLOR_SAMPLES=1
 			float spec;
 			spec=(*pixels)(x,y).L.GetSpectrum();
 			for(int i = 0; i < COLOR_SAMPLES; ++i) {
@@ -178,17 +181,72 @@ void ImageFilm::WriteImage() {
 		}
 	}
 	
-	//save
-	Info("saving file, num pixels %d",offset);
-	Info("color samples %d", COLOR_SAMPLES);
 	FILE *fp;
-	fp=fopen("image_hyp.dat","wb");
+	fp=fopen(OUTPUT_NAME,"wb");
 	fwrite(image_hyp,sizeof(float),COLOR_SAMPLES*nPix,fp);
 	fclose(fp);
+
 	
 	
+	
+			
+			
 
 
+// Convert image to RGB and compute final pixel values
+// 	int nPix = xPixelCount * yPixelCount;
+// 	float *rgb = new float[3*nPix], *alpha = new float[nPix]; 
+// 	int offset = 0;
+// 	for (int y = 0; y < yPixelCount; ++y) {
+// 		for (int x = 0; x < xPixelCount; ++x) {
+// 			// Convert pixel spectral radiance to RGB
+// 			float xyz[3];
+// 			(*pixels)(x, y).L.XYZ(xyz);
+// 			const float
+// 				rWeight[3] = { 3.240479f, -1.537150f, -0.498535f };
+// 			const float
+// 				gWeight[3] = {-0.969256f,  1.875991f,  0.041556f };
+// 			const float
+// 				bWeight[3] = { 0.055648f, -0.204043f,  1.057311f };
+// 			rgb[3*offset  ] = rWeight[0]*xyz[0] +
+// 			                  rWeight[1]*xyz[1] +
+// 				              rWeight[2]*xyz[2];
+// 			rgb[3*offset+1] = gWeight[0]*xyz[0] +
+// 			                  gWeight[1]*xyz[1] +
+// 				              gWeight[2]*xyz[2];
+// 			rgb[3*offset+2] = bWeight[0]*xyz[0] +
+// 			                  bWeight[1]*xyz[1] +
+// 				              bWeight[2]*xyz[2];
+// 			alpha[offset] = (*pixels)(x, y).alpha;
+// 			// Normalize pixel with weight sum
+// 			float weightSum = (*pixels)(x, y).weightSum;
+// 			if (weightSum != 0.f) {
+// 				float invWt = 1.f / weightSum;
+// 				rgb[3*offset  ] =
+// 					Clamp(rgb[3*offset  ] * invWt, 0.f, INFINITY);
+// 				rgb[3*offset+1] =
+// 					Clamp(rgb[3*offset+1] * invWt, 0.f, INFINITY);
+// 				rgb[3*offset+2] =
+// 					Clamp(rgb[3*offset+2] * invWt, 0.f, INFINITY);
+// 				alpha[offset] = Clamp(alpha[offset] * invWt, 0.f, 1.f);
+// 			}
+// 			// Compute premultiplied alpha color
+// 			if (premultiplyAlpha) {
+// 				rgb[3*offset  ] *= alpha[offset];
+// 				rgb[3*offset+1] *= alpha[offset];
+// 				rgb[3*offset+2] *= alpha[offset];
+// 			}
+// 			++offset;
+// 		}
+// 	}
+// 	// Write RGBA image
+// 	WriteRGBAImage(filename, rgb, alpha,
+// 		xPixelCount, yPixelCount,
+// 		xResolution, yResolution,
+// 		xPixelStart, yPixelStart);
+// 	// Release temporary image memory
+// 	delete[] alpha;
+// 	delete[] rgb;
 }
 extern "C" DLLEXPORT Film *CreateFilm(const ParamSet &params, Filter *filter)
 {

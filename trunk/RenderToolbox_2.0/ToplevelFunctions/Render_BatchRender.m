@@ -24,6 +24,12 @@ function Render_BatchRender(experimentDirectory)
 
 display(['running at ' datestr(now)]);
 
+%if there are no arguments, make experimentDirectory the working directory
+if nargin==0
+    experimentDirectory=pwd;
+end
+
+
 %deal with path--add current directory to path
 addpath(pwd);
 
@@ -38,6 +44,8 @@ coneImageDirectory='cone_image_data';
 monitorImageDirectory='monitor_image_data';
 temporaryDirectory='tmp';
 viewFilesDirectory='view_files';
+pbrtScriptsDirectory='pbrt_scripts';
+pbrtOutputDirectory='pbrt_output';
 
 %remove previous temporary files
 unix(['rm -rf ' temporaryDirectory]);
@@ -177,5 +185,3 @@ for currentConditionNumber=1:numConditions
 % 	end
 %     
 end
-
-cd ..;
