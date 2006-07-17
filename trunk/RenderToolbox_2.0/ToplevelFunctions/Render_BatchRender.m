@@ -20,7 +20,7 @@ function Render_BatchRender(experimentDirectory)
 % 11/27/05 dpl wrote it. based on bx's batchRender
 % 12/28/05 dpl modified to link objectProperties, lightProperties etc...
 % 2/17/06 dpl major changes.
-
+% 7/1/06 dpl added pbrt functionality
 
 display(['running at ' datestr(now)]);
 
@@ -28,7 +28,6 @@ display(['running at ' datestr(now)]);
 if nargin==0
     experimentDirectory=pwd;
 end
-
 
 %deal with path--add current directory to path
 addpath(pwd);
@@ -47,8 +46,30 @@ viewFilesDirectory='view_files';
 pbrtScriptsDirectory='pbrt_scripts';
 pbrtOutputDirectory='pbrt_output';
 
-%remove previous temporary files
+%remove previous temporary files and create a new directory
 unix(['rm -rf ' temporaryDirectory]);
+unix(['mkdir ' temporaryDirectory]);
+
+
+
+%read from conditions file
+allConditions=Parameters_ReadStructsFromTabText('conditions.txt');
+isRadiance=strcmp(allConditions.renderer,'radiance');
+numConditions=length(allConditions);
+
+%check to make sure we have required fields in conditions file
+requirements={'sceneName','renderer','imageRes','wavelengthsStart','wavelengthsStep', ...
+    'wavelengthsNumSteps','humanCones','tonemap','calibrationFile','lightPower'};
+if isRadiance
+    requirements=[requirements 'viewFile'];
+end
+for i=1:length(requirements)
+    if ~isfield(allConditions,requirements{i})
+        error(['ERROR. conditions file missing required conditions ' requirements{i}]);
+        return;
+    end
+end
+
 
 %read from object file
 objectProperties=Parameters_ReadStructsFromTabText('objectProperties.txt');
@@ -65,19 +86,21 @@ for i=1:length(requirements)
     end
 end
 
-%check to make sure objectProperties file matches objects in object directory
-%**(this does not check if there are extra objects in the object directory)
-cd(objectDirectory);
-files=ls('*.obj *.rad');
-for i=1:numObjects
-    name=objectProperties(i).objectName;
-    result=regexp(files,[name '.(rad|obj)']);
-    if isempty(result)
-       error(['ERROR. object ' name ' in objectProperties does not have corresponding file in object directory']);
-       return;
+if isRadiance
+    %check to make sure objectProperties file matches objects in object directory
+    %**(this does not check if there are extra objects in the object directory)
+    cd(objectDirectory);
+    files=ls('*.obj *.rad');
+    for i=1:numObjects
+        name=objectProperties(i).objectName;
+        result=regexp(files,[name '.(rad|obj)']);
+        if isempty(result)
+           error(['ERROR. object ' name ' in objectProperties does not have corresponding file in object directory']);
+           return;
+        end
     end
+    cd ..;
 end
-cd ..;
 
 
 %read from lights file
@@ -93,32 +116,20 @@ for i=1:length(requirements)
     end
 end
 
-%check to make sure lightProperties file matches lights in object directory
-%**(this does not check if there are extra lights in the object directory)
-cd(objectDirectory);
-files=ls('*.obj *.rad');
-for i=1:numLights
-    name=lightProperties(i).lightName;
-    result=regexp(files,[name '.(rad|obj)']);
-    if isempty(result)
-       error(['ERROR. object ' name ' in lightProperties does not have corresponding file in object directory']);
-       return;
+if isRadiance
+    %check to make sure lightProperties file matches lights in object directory
+    %**(this does not check if there are extra lights in the object directory)
+    cd(objectDirectory);
+    files=ls('*.obj *.rad');
+    for i=1:numLights
+        name=lightProperties(i).lightName;
+        result=regexp(files,[name '.(rad|obj)']);
+        if isempty(result)
+           error(['ERROR. object ' name ' in lightProperties does not have corresponding file in object directory']);
+           return;
+        end
     end
-end
-cd ..;
-
-%read from conditions file
-allConditions=Parameters_ReadStructsFromTabText('conditions.txt');
-numConditions=length(allConditions);
-
-%check to make sure we have required fields in conditions file
-requirements={'sceneName','renderer','imageRes','wavelengthsStart','wavelengthsStep', ...
-    'wavelengthsNumSteps','viewFile','humanCones','tonemap','calibrationFile','lightPower'};
-for i=1:length(requirements)
-    if ~isfield(allConditions,requirements{i})
-        error(['ERROR. conditions file missing required conditions ' requirements{i}]);
-        return;
-    end
+    cd ..;
 end
 
 %read from renderer properties file
@@ -133,7 +144,7 @@ for i=1:length(requirements)
         return;
     end
 end
-
+    
 %turn number fields into text fields
 %**(this code assumes that the requirements are the only fields in the
 %structure)
@@ -142,8 +153,8 @@ for i=1:length(requirements)
         rendererParams.(requirements{i})= ...
             num2str(rendererParams.(requirements{i}));
     end
-end
-
+end   
+    
 %add stuff to conditions file
 for currentConditionNumber=1:numConditions
     allConditions(currentConditionNumber).objectDirectory=objectDirectory;
@@ -153,35 +164,33 @@ for currentConditionNumber=1:numConditions
     allConditions(currentConditionNumber).currentConditionNumber=currentConditionNumber;
     allConditions(currentConditionNumber).monitorImageDirectory=monitorImageDirectory;
     allConditions(currentConditionNumber).viewFilesDirectory=viewFilesDirectory;
+    allConditions(currentConditionNumber).pbrtScriptsDirectory=pbrtScriptsDirectory;
+    allConditions(currentConditionNumber).pbrtOutputDirectory=pbrtOutputDirectory;   
 end
    
 %render the scene
 for currentConditionNumber=1:numConditions
-% 	try
         display(['**Current condition: ' allConditions(currentConditionNumber).sceneName ...
             ', ' datestr(now)]);
-        %link the objectProperties and lightProperties to condition dependant
-        %parameter stored in the conditions files in order to pass them to
-        %RenderRoom
+
+        %process image properties
         [objectMaterialParams lightMaterialParams currentConditions] = ...
             Render_ProcessMaterialProps(objectProperties,lightProperties,allConditions(currentConditionNumber));
+        
+        %render the image
         switch(allConditions(currentConditionNumber).renderer)
             case 'radiance'
-                %note: we must be in the experiment directory for this function to
-                %work.
                 Render_RenderRadiance(currentConditions,objectMaterialParams,lightMaterialParams,rendererParams);
             case 'pbrt'
-                display('rendering pbrt...');
                 Render_RenderPBRT(currentConditions,objectMaterialParams,lightMaterialParams);
             otherwise
-                error('Only the radiance renderer is currently supported.');
+                error('Only the radiance and pbrt renderers are currently supported.');
         end
+        
+        %now take output of rendering and process into a monitor image
+        display('generating monitor images...');
+        Render_ProcessImage(currentConditions);
+        
         display(['Finished at ' datestr(now)]);
         display(' ');
-% 	catch
-% 		display('Could not finish this condition for following reason:')
-% 		display(lasterr);
-% 		display(' ');
-% 	end
-%     
 end

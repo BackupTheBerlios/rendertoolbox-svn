@@ -106,13 +106,14 @@ namespace pbrt {
 				colorData.getData(r,g,b);
 				
 				texcolor = ++textureNum;
-				fout << "Texture \"" << texcolor << "\" \"color\" \"constant\" \"color value\" [" << r << " " << g << " " << b << "]" << std::endl;
+				//only output r values. see comments in point and spot lights for reason (dpl)
+				fout << "Texture \"" << texcolor << "\" \"color\" \"constant\" \"color value\" [" << r << /*" " << g << " " << b <<*/ "]" << std::endl;
 			} else if (colorData.numericType() == MFnNumericData::k3Double) {
 				double r,g,b;
 				colorData.getData(r,g,b);
 				
 				texcolor = ++textureNum;
-				fout << "Texture \"" << texcolor << "\" \"color\" \"constant\" \"color value\" [" << r << " " << g << " " << b << "]" << std::endl;			
+				fout << "Texture \"" << texcolor << "\" \"color\" \"constant\" \"color value\" [" << r << /*" " << g << " " << b << */ "]" << std::endl;			
 			} else {
 				MGlobal::displayWarning("Invalid data tuple"); return 0;
 			}

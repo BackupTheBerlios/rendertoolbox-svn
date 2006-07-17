@@ -30,16 +30,4 @@ display('render the scene...');
 Render_RenderScene(currentConditions);
 
 %turn pic into mat
-display('make picture matrix...');
-Render_PicToMat(currentConditions);
-
-%make S image and cone images
-display('generate and write image data...');
-Render_MakeSimg(currentConditions);
-
-%convert into cone image
-Render_MakeConeImage(currentConditions);
-
-%convert into monitor image
-display('generating and writing monitor image...');
-Render_MakeMonitorImage(currentConditions);
+Render_RadiancePicToMat(currentConditions);

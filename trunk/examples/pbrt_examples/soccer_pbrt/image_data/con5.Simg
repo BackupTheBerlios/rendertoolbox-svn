@@ -21,27 +21,25 @@ struct
 #SimEnd
 
 #SimHeight
-100 
+200 
 #SimEnd
 
 #SimWidth
-100 
+200 
 #SimEnd
 
 ##SimWavelengthSampling
 ##SimStart
 400 
 ##SimStep
-100 
+0 
 ##SimNumberSamples
-3 
+1 
 ##SimEnd
 
-#Sim#ImageFactors
-3 1
+#SimImageFactors
 1 
-1 
-1 
+#SimEnd
 
 #SimInputCameraDistance
 1 
@@ -67,11 +65,11 @@ RadianceCamera
 
 #Sim#WavelengthSampling
 1 3
-400 100 3 
+400 0 1 
 
-#Sim#SpectralSensitivity
-1 3
-0 0 0 
+#SimSpectralSensitivity
+0 
+#SimEnd
 
 #SimUnit
 None
@@ -89,11 +87,11 @@ None
 ##SimEnd
 
 #SimHeight
-100 
+200 
 #SimEnd
 
 #SimWidth
-100 
+200 
 #SimEnd
 
 #SimComments

@@ -1,53 +1,73 @@
 function fileNames=Render_GeneratePBRTScripts(currentConditions,objectMaterialParams,lightMaterialParams,pbrtScript)
 
-%get stuff from conditions, some for use in bei's code below
+%get stuff from conditions
+temporaryDirectory=currentConditions.temporaryDirectory;
+pbrtScriptsDirectory=currentConditions.pbrtScriptsDirectory;
 wavelengths=currentConditions.wls;
 sceneName=currentConditions.sceneName;
 currentConditionNumber=currentConditions.currentConditionNumber;
+resolution=currentConditions.imageRes;
 
-%get spectrum for each object
+%get spectrum for each object and lights
 numWavelengths=length(wavelengths);
+
 numObjects=length(objectMaterialParams);
 objectNames={objectMaterialParams.name};
 objectSpectrum={objectMaterialParams.spectrum};
 
+numLights=length(lightMaterialParams);
+lightNames={lightMaterialParams.name};
+lightSpectrum={lightMaterialParams.spectrum};
 
-%temp
-%tokens to for
-objectNames={'tex1','tex2'};
-objectSpectrum={objectMaterialParams([1 4]).spectrum};
-numObjects=2;
+%replace scripts directory
+saveDirectory = [temporaryDirectory '/' pbrtScriptsDirectory];
+unix(['rm -rf ' saveDirectory]);
+unix(['mkdir ' saveDirectory]);
+
 
 %initialize fileNames cell
 fileNames='';
 
 %step through each wavelength and make a new version of the pbrt file
-display('   generating pbrt scripts...');
 for currentWavelength=1:numWavelengths
+    fileName=[sceneName '_' num2str(currentConditionNumber) '_' ...
+        num2str(wavelengths(currentWavelength))];
+    fileNames{currentWavelength}=fileName;
+    fprintf(['   ' fileName '.pbrt...  ']);
+    
+    
     newOutput=sprintf('%s',char(pbrtScript));
-    %%
-    %%add real processing code
-    %%
-
-    %temp test code
+    
+    %set the resolution
+    resolutionStr=num2str(resolution);
+    exp='(xresolution"\s+)\[(.*?)\]';
+    replaceStr=['$1[' resolutionStr ']'];
+    newOutput=regexprep(newOutput,exp,replaceStr);
+    exp='(yresolution"\s+)\[(.*?)\]';
+    newOutput=regexprep(newOutput,exp,replaceStr);
+    
+    %do objects
     for currentObject=1:numObjects
-        token=objectNames{currentObject};
+        objectName=objectNames{currentObject};
         replacementSpectrum=num2str(objectSpectrum{currentObject}(currentWavelength));
-        exp=['("color\s' token '"\s+)\[(.*?)\]'];
+        exp=['(#ShapeName:' objectName '_objectShape\nAttributeBegin.*?value"\s+)\[(.*?)\]'];
+        replaceStr=['$1[' replacementSpectrum ']'];
+        newOutput=regexprep(newOutput,exp,replaceStr);
+    end
+    
+    %do lights
+    for currentLight=1:numLights
+        lightName=lightNames{currentLight};
+        replacementSpectrum=num2str(lightSpectrum{currentLight}(currentWavelength));
+        exp=['(#PointLightName:' lightName '\nTransformBegin.*?color I"\s+)\[(.*?)\]'];
         replaceStr=['$1[' replacementSpectrum ']'];
         newOutput=regexprep(newOutput,exp,replaceStr);
     end
 
-
-
-    %%
-    %%end real processing code
-    %%
-
-    fileName=[sceneName '_' num2str(currentConditionNumber) '_' ...
-        num2str(wavelengths(currentWavelength))];
-    fileNames{currentWavelength}=fileName;
-    f=fopen([fileName '.pbrt'],'wt');
+    %save it
+    f=fopen([saveDirectory '/' fileName '.pbrt'],'wt');
     fwrite(f,newOutput);
     fclose(f);
+    
+    fprintf('done.\n');
 end

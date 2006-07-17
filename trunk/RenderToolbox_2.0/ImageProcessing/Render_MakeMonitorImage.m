@@ -121,5 +121,5 @@ end
 
 %save it
 eval([sceneName 'MonitorImage = monitorImage.images;']);
-eval(['save ' fullfile(monitorImageDirectory,[sceneName 'MonitorImage']) ' ' sceneName 'MonitorImage' '']);
+eval(['save ' fullfile(monitorImageDirectory,[sceneName '_MonitorImage']) ' ' sceneName 'MonitorImage' '']);
 

@@ -13,9 +13,9 @@ sceneName=currentConditions.sceneName;
 wls=currentConditions.wls;
 imageDirectory=currentConditions.imageDirectory;
 
-%load and the delete picture matrix
+%load and then delete everything in the directory
 load([imageDirectory '/picMat.mat']);
-unix(['rm ' imageDirectory '/picMat.mat']);
+unix(['rm -rf ' imageDirectory '/*']);
 
 % Define camera and read it.
 camera.manufacturer = 'n/a';

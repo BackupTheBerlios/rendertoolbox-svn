@@ -67,6 +67,9 @@ namespace pbrt {
 	
 	// insert the maya data into a pbrt input file
 	void Mesh::Insert(std::ostream& fout) const {
+		//(dpl)add shape name comment
+		MString name = dagPath.partialPathName();
+		fout << endl << "#ShapeName:" << name.asChar() << endl;
 		// go through all the different polygon sets and output the data
 		for (unsigned int i=0; i < polySets.size(); i++) {
 			fout << polySets[i] << std::endl;

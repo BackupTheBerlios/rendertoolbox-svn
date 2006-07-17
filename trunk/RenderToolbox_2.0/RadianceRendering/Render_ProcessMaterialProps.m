@@ -20,10 +20,6 @@ function [objectMaterialParams lightMaterialParams currentConditions] = ...
 objectDirectory=currentConditions.objectDirectory;
 temporaryDirectory=currentConditions.temporaryDirectory;
 
-%assume that we're in the experiment directory and the object directory is
-%in that directory
-cd(objectDirectory);
-
 %get stats about conditions
 conditionNames=fieldnames(currentConditions);
 numConditionNames=length(conditionNames);
@@ -96,5 +92,3 @@ for currentLight=1:numLights
     lightMaterialParams(currentLight)=materialParam;
 end
 
-%cd back into the directory that we started in
-cd ..

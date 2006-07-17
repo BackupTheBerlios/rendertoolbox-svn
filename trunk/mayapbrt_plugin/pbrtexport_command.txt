@@ -1,2 +1,0 @@
-cd /Users/dan/work/pbrt/plugin/mayapbrt_new
-/usr/bin/g++-3.3 -o /Users/dan/work/pbrt/plugin/mayapbrt_new/build/pbrtexport.dylib -L/Users/dan/work/pbrt/plugin/mayapbrt_new/build -L/Applications/Alias/maya7.0/Maya.app/Contents/MacOS -F/Users/dan/work/pbrt/plugin/mayapbrt_new/build -filelist /Users/dan/work/pbrt/plugin/pbrtexport_complete.LinkFileList -arch ppc -Wl,-single_module -dynamiclib -compatibility_version 1 -current_version 1 -install_name /usr/local/lib/pbrtexport.dylib
