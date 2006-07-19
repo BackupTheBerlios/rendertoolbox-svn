@@ -19,11 +19,11 @@ numLights=length(lightMaterialParams);
 lightNames={lightMaterialParams.name};
 lightSpectrum={lightMaterialParams.spectrum};
 
-%replace scripts directory
+%make scripts directory if it doesn't already exist
 saveDirectory = [temporaryDirectory '/' pbrtScriptsDirectory];
-unix(['rm -rf ' saveDirectory]);
-unix(['mkdir ' saveDirectory]);
-
+if ~exist(saveDirectory,'dir');
+    mkdir(saveDirectory);
+end
 
 %initialize fileNames cell
 fileNames='';
@@ -33,41 +33,43 @@ for currentWavelength=1:numWavelengths
     fileName=[sceneName '_' num2str(currentConditionNumber) '_' ...
         num2str(wavelengths(currentWavelength))];
     fileNames{currentWavelength}=fileName;
-    fprintf(['   ' fileName '.pbrt...  ']);
+    fileNamePath=[saveDirectory '/' fileName '.pbrt'];
     
-    
-    newOutput=sprintf('%s',char(pbrtScript));
-    
-    %set the resolution
-    resolutionStr=num2str(resolution);
-    exp='(xresolution"\s+)\[(.*?)\]';
-    replaceStr=['$1[' resolutionStr ']'];
-    newOutput=regexprep(newOutput,exp,replaceStr);
-    exp='(yresolution"\s+)\[(.*?)\]';
-    newOutput=regexprep(newOutput,exp,replaceStr);
-    
-    %do objects
-    for currentObject=1:numObjects
-        objectName=objectNames{currentObject};
-        replacementSpectrum=num2str(objectSpectrum{currentObject}(currentWavelength));
-        exp=['(#ShapeName:' objectName '_objectShape\nAttributeBegin.*?value"\s+)\[(.*?)\]'];
-        replaceStr=['$1[' replacementSpectrum ']'];
-        newOutput=regexprep(newOutput,exp,replaceStr);
-    end
-    
-    %do lights
-    for currentLight=1:numLights
-        lightName=lightNames{currentLight};
-        replacementSpectrum=num2str(lightSpectrum{currentLight}(currentWavelength));
-        exp=['(#PointLightName:' lightName '\nTransformBegin.*?color I"\s+)\[(.*?)\]'];
-        replaceStr=['$1[' replacementSpectrum ']'];
-        newOutput=regexprep(newOutput,exp,replaceStr);
-    end
+    if ~exist(fileNamePath,'file')    
+        fprintf(['   ' fileName '.pbrt...  ']);
+        newOutput=sprintf('%s',char(pbrtScript));
 
-    %save it
-    f=fopen([saveDirectory '/' fileName '.pbrt'],'wt');
-    fwrite(f,newOutput);
-    fclose(f);
-    
-    fprintf('done.\n');
+        %set the resolution
+        resolutionStr=num2str(resolution);
+        exp='(xresolution"\s+)\[(.*?)\]';
+        replaceStr=['$1[' resolutionStr ']'];
+        newOutput=regexprep(newOutput,exp,replaceStr);
+        exp='(yresolution"\s+)\[(.*?)\]';
+        newOutput=regexprep(newOutput,exp,replaceStr);
+
+        %do objects
+        for currentObject=1:numObjects
+            objectName=objectNames{currentObject};
+            replacementSpectrum=num2str(objectSpectrum{currentObject}(currentWavelength));
+            exp=['(#ShapeName:' objectName '_objectShape\nAttributeBegin.*?value"\s+)\[(.*?)\]'];
+            replaceStr=['$1[' replacementSpectrum ']'];
+            newOutput=regexprep(newOutput,exp,replaceStr);
+        end
+
+        %do lights
+        for currentLight=1:numLights
+            lightName=lightNames{currentLight};
+            replacementSpectrum=num2str(lightSpectrum{currentLight}(currentWavelength));
+            exp=['(#PointLightName:' lightName '\nTransformBegin.*?color I"\s+)\[(.*?)\]'];
+            replaceStr=['$1[' replacementSpectrum ']'];
+            newOutput=regexprep(newOutput,exp,replaceStr);
+        end
+
+        %save it
+        f=fopen(fileNamePath,'wt');
+        fwrite(f,newOutput);
+        fclose(f);
+
+        fprintf('done.\n');
+    end %if exists
 end

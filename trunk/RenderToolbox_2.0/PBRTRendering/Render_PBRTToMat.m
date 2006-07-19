@@ -10,17 +10,25 @@ temporaryDirectory=currentConditions.temporaryDirectory;
 pbrtOutputDirectory=currentConditions.pbrtOutputDirectory;
 loadDirectory = [temporaryDirectory '/' pbrtOutputDirectory];
 
-%get files and put into a format for the rest of the rendering toolbox to
-%turn into a monitor image
-for currentWavelength=1:numWavelengths
-    currentFileName=fileNames{currentWavelength};
-    f=fopen([loadDirectory '/' currentFileName '.dat'],'r');
-    temp=fread(f,'float32');
-    imageData=reshape(temp,resolution,resolution);
-    imageData=rot90(imageData,-1);
-    fclose(f);
-    picMat{currentWavelength}=imageData;
+%make image directory if there isn't one
+if ~exist(imageDirectory,'dir')
+    mkdir(imageDirectory);
 end
 
-cmd=['save ' imageDirectory '/picMat.mat picMat'];
-eval(cmd);     
+fileNamePath=[imageDirectory '/picMat.mat'];
+if ~exist(fileNamePath,'file')
+    %get files and put into a format for the rest of the rendering toolbox to
+    %turn into a monitor image
+    for currentWavelength=1:numWavelengths
+        currentFileName=fileNames{currentWavelength};
+        f=fopen([loadDirectory '/' currentFileName '.dat'],'r');
+        temp=fread(f,'float32');
+        imageData=reshape(temp,resolution,resolution);
+        imageData=rot90(imageData,-1);
+        fclose(f);
+        picMat{currentWavelength}=imageData;
+    end
+
+    cmd=['save ' imageDirectory '/picMat.mat picMat'];
+    eval(cmd);
+end

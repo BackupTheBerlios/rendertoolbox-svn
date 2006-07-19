@@ -21,8 +21,13 @@ numWavelengths=length(wavelengths);
 
 for currentWavelength=1:numWavelengths
     currentFileName=fileNames{currentWavelength};
-    cmd=['pbrt ' saveDirectory '/' currentFileName '.dat '  loadDirectory '/' currentFileName '.pbrt' ];
-    fprintf(['   wavelength ' num2str(wavelengths(currentWavelength)) '...   ']);
-    [status result]=unix(cmd);
-    fprintf('done.\n');
+    loadFileNamePath=[loadDirectory '/' currentFileName '.pbrt'];
+    saveFileNamePath=[saveDirectory '/' currentFileName '.dat'];
+    
+    if ~exist(saveFileNamePath,'file')
+        cmd=['pbrt ' saveFileNamePath ' ' loadFileNamePath];
+        fprintf(['   wavelength ' num2str(wavelengths(currentWavelength)) '...   ']);
+        [status result]=unix(cmd);
+        fprintf('done.\n');
+    end
 end

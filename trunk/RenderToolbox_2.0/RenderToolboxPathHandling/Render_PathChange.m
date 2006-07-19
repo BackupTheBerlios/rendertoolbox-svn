@@ -1,4 +1,4 @@
-function Render_PathChange(version)
+function Render_PathChange(version,directory)
 % Render_PathChange(version)
 %
 % PathChange adds the path to the redertoolbox of the passed version
@@ -10,10 +10,14 @@ function Render_PathChange(version)
 %hard code paths to different versions
 %**(can make this smarter sometime)
 % versionPaths{1}=%fill in the rest of this path: '/repos/rendertoolbox/branches/RenderToolbox_1.0';
-versionPaths{2}='/Users.local/Shared/dpl/repos/rendertoolbox/trunk/RenderToolbox_2.0';
 %versionPaths{2}='/Users.local/Shared/dpl/repos/simulatortoolbox/trunk/SimToolbox';
 
-
+if nargin==1
+    versionPaths{version}='/Users.local/Shared/dpl/repos/rendertoolbox/trunk/RenderToolbox_2.0';
+elseif nargin==2
+    versionPaths{version}=directory;
+end
+    
 %put the whole path into a cell of strings
 fullMatlabPath=matlabpath;
 currentPosition=1;
