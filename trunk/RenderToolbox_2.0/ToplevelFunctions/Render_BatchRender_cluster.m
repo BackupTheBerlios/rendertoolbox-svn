@@ -3,8 +3,8 @@ function Render_BatchRender_cluster(experimentDirectory)
 display(['running at ' datestr(now)]);
 
 %add the RenderToolbox to the path
-eval(['../RenderToolbox_2.0/RenderToolboxPathHandling/' ...
-        'Render_PathChange(2,''/home1/brainard/dpl/RenderToolbox_2.0''']);
+% eval(['../RenderToolbox_2.0/RenderToolboxPathHandling/' ...
+%         'Render_PathChange(2,''/home1/brainard/dpl/RenderToolbox_2.0''']);
 
 
 %if there are no arguments, make experimentDirectory the working directory

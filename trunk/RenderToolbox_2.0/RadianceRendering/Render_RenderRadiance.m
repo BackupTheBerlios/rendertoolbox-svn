@@ -13,6 +13,11 @@ function  Render_RenderRadiance(currentConditions,objectMaterialParams,lightMate
 % 1/11/06 dpl put Render_ProcessMaterialProps into batchRender
 % 3/2/06 dpl removed some comments and changed name
 
+%see if we need to reprocess all the files
+%.. can add this later
+
+
+
 %convert objects and lights into radiance files
 display('convert objects and lights into radiance files...');
 Render_SceneObjectsToRad(objectMaterialParams,lightMaterialParams,currentConditions);
