@@ -71,5 +71,7 @@ for currentWavelength=1:numWavelengths
         fclose(f);
 
         fprintf('done.\n');
+    elseif
+        fprintf(['   ' fileName '.pbrt already done.']);
     end %if exists
 end

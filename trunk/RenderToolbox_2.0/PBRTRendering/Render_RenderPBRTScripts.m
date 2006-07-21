@@ -29,5 +29,7 @@ for currentWavelength=1:numWavelengths
         fprintf(['   wavelength ' num2str(wavelengths(currentWavelength)) '...   ']);
         [status result]=unix(cmd);
         fprintf('done.\n');
+    elseif
+        fprintf(['   wavelength ' num2str(wavelengths(currentWavelength)) ' already done.']);  	
     end
 end
