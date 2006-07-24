@@ -60,7 +60,7 @@ for currentWavelength=1:numWavelengths
         for currentLight=1:numLights
             lightName=lightNames{currentLight};
             replacementSpectrum=num2str(lightSpectrum{currentLight}(currentWavelength));
-            exp=['(#PointLightName:' lightName '\nTransformBegin.*?color I"\s+)\[(.*?)\]'];
+            exp=['(#SpotLightName:' lightName '_lightShape\nTransformBegin.*?color I"\s+)\[(.*?)\]'];
             replaceStr=['$1[' replacementSpectrum ']'];
             newOutput=regexprep(newOutput,exp,replaceStr);
         end
@@ -72,6 +72,6 @@ for currentWavelength=1:numWavelengths
 
         fprintf('done.\n');
     else
-        fprintf(['   ' fileName '.pbrt already done.']);
+        fprintf(['   ' fileName '.pbrt already done.\n']);
     end %if exists
 end
