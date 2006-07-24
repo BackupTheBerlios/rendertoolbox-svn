@@ -1,1 +1,1 @@
-objectName	objectType	glossiness	roughness	spectrumNumber	spectrumTypebackwall_object	ward	0	0	24	macbethPeterfloor_object	ward	0	0	13	macbethPeterroom_object	ward	0	0	20	macbethPetertableleft_object	ward	0	0	20	macbethPetersphere_object	ward	0.02	0	1	macbethPeter
+objectName	objectType	glossiness	roughness	spectrumNumber	spectrumTypebackwall	ward	0	0	24	macbethPeterfloor	ward	0	0	13	macbethPeterroom	ward	0	0	20	macbethPetertableleft	ward	0	0	20	macbethPetersphere	ward	0.02	0	1	macbethPeter

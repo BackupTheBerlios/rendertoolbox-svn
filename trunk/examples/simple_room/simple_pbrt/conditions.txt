@@ -1,1 +1,1 @@
-sceneName	renderer	imageRes	wavelengthsStart	wavelengthsStep	wavelengthsNumSteps	humanCones	tonemap	calibrationFile	lightPowercon5	pbrt	800	400	10	3	ss2	1	StereoLeft_8	7
+sceneName	renderer	imageRes	wavelengthsStart	wavelengthsStep	wavelengthsNumSteps	humanCones	tonemap	calibrationFile	lightPowercon5	pbrt	800	400	10	31	ss2	1	StereoLeft_8	7
