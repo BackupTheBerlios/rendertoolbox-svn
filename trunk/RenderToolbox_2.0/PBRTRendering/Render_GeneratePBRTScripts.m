@@ -34,8 +34,12 @@ for currentWavelength=1:numWavelengths
         num2str(wavelengths(currentWavelength))];
     fileNames{currentWavelength}=fileName;
     fileNamePath=[saveDirectory '/' fileName '.pbrt'];
+    lockFileNamePath=[saveDirectory '/' fileName '.loc'];
     
-    if ~exist(fileNamePath,'file')    
+    if ~exist(lockFileNamePath,'file') && ~exist(fileNamePath,'file')
+    	f=fopen(lockFileNamePath,'w');
+    	fclose(f);
+    
         fprintf(['   ' fileName '.pbrt...  ']);
         newOutput=sprintf('%s',char(pbrtScript));
 
@@ -69,7 +73,7 @@ for currentWavelength=1:numWavelengths
         f=fopen(fileNamePath,'wt');
         fwrite(f,newOutput);
         fclose(f);
-
+		unix(['rm ' lockFileNamePath]);
         fprintf('done.\n');
     else
         fprintf(['   ' fileName '.pbrt already done.\n']);

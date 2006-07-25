@@ -167,14 +167,17 @@ for currentConditionNumber=1:numConditions
             case 'radiance'
                 Render_RenderRadiance(currentConditions,objectMaterialParams,lightMaterialParams,rendererParams);
             case 'pbrt'
-                Render_RenderPBRT(currentConditions,objectMaterialParams,lightMaterialParams);
+                doImageProcess=Render_RenderPBRT(currentConditions,objectMaterialParams,lightMaterialParams);
             otherwise
                 error('Only the radiance and pbrt renderers are currently supported.');
         end
         
         %now take output of rendering and process into a monitor image
-        display('generating monitor images...');
-        Render_ProcessImage(currentConditions);
+        if doImageProcess
+        	display('generating monitor images...');
+        	Render_ProcessImage(currentConditions);
+        	unix(['rm ' temporaryDirectory '/image_processing.loc']);
+        end
         
         display(['Finished at ' datestr(now)]);
         display(' ');

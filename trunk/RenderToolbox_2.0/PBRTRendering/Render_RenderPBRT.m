@@ -1,4 +1,4 @@
-function Render_RenderPBRT(currentConditions,objectMaterialParams,lightMaterialParams)
+function doImageProcess=Render_RenderPBRT(currentConditions,objectMaterialParams,lightMaterialParams)
 % 8 junly 2006 dpl wrote it.
 
 % assume we're in the experiment directory
@@ -16,5 +16,18 @@ fileNames=Render_GeneratePBRTScripts(currentConditions,objectMaterialParams,ligh
 display('rendering image with pbrt...');
 Render_RenderPBRTScripts(currentConditions,fileNames);
 
-%generate picture matrix from raw pbrt output
-Render_PBRTToMat(currentConditions,fileNames);
+%place the image processing lock so that only
+%one thread does it
+temporaryDirectory=currentConditions.temporaryDirectory;
+fileNamePath=[temporaryDirectory '/image_processing.loc'];
+if ~exist(fileNamePath,'file')
+	f=fopen(fileNamePath,'w');
+	fclose(f);
+	doImageProcess=true;
+	%generate picture matrix from raw pbrt output
+	display('passing image matrix back to general image processing...');
+	Render_PBRTToMat(currentConditions,fileNames);
+else
+	doImageProcess=false;
+	display('image processing done by another thread');
+end
