@@ -4,6 +4,7 @@ function Render_RenderPBRTScripts(currentConditions,fileNames)
 temporaryDirectory=currentConditions.temporaryDirectory;
 pbrtScriptsDirectory=currentConditions.pbrtScriptsDirectory;
 pbrtOutputDirectory=currentConditions.pbrtOutputDirectory;
+sceneName=currentConditions.sceneName;
 
 loadDirectory = [temporaryDirectory '/' pbrtScriptsDirectory];
 saveDirectory = [temporaryDirectory '/' pbrtOutputDirectory];
@@ -22,9 +23,9 @@ numWavelengths=length(wavelengths);
 for currentWavelength=1:numWavelengths
     currentFileName=fileNames{currentWavelength};
     loadFileNamePath=[loadDirectory '/' currentFileName '.pbrt'];
-    loadLockFileNamePath=[loadDirectory '/' currentFileName '.loc'];
+    loadLockFileNamePath=[loadDirectory '/' sceneName '_' currentFileName '.loc'];
     saveFileNamePath=[saveDirectory '/' currentFileName '.dat'];
-    lockFileNamePath=[saveDirectory '/' currentFileName '.loc'];
+    lockFileNamePath=[saveDirectory '/' sceneName '_' currentFileName '.loc'];
     
     if ~exist(saveFileNamePath,'file') && ~exist(lockFileNamePath,'file')
     	%make the lock file so other threads don't attempt to process this wavelength
@@ -34,12 +35,7 @@ for currentWavelength=1:numWavelengths
     	%make sure the pbrt script is finished, if not wait until it is
     	if ~exist(loadFileNamePath,'file') && exist(loadLockFileNamePath,'file')
     		fprintf(' ...waiting for file... ');
-    		while 1
-    			pause(.1);
-    			if exist(loadFileNamePath,'file')
-    				break;
-    			end
-    		end
+			Render_WaitForFile(loadFileNamePath);
     	end
     	%now carry on    	
         cmd=['pbrt ' saveFileNamePath ' ' loadFileNamePath];

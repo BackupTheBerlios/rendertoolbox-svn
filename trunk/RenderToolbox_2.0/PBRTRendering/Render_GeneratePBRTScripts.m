@@ -63,8 +63,8 @@ for currentWavelength=1:numWavelengths
         %do lights
         for currentLight=1:numLights
             lightName=lightNames{currentLight};
-            replacementSpectrum=num2str(lightSpectrum{currentLight}(currentWavelength));
-            exp=['(#SpotLightName:' lightName '_lightShape\nTransformBegin.*?color I"\s+)\[(.*?)\]'];
+            replacementSpectrum=num2str(100*lightSpectrum{currentLight}(currentWavelength));
+            exp=['(#PointLightName:' lightName '_lightShape\nTransformBegin.*?color I"\s+)\[(.*?)\]'];
             replaceStr=['$1[' replacementSpectrum ']'];
             newOutput=regexprep(newOutput,exp,replaceStr);
         end

@@ -11,7 +11,7 @@ EXRINCLUDE=OpenEXR/include
 EXRLIBS=-lIlmImf -lImath -lIex -lHalf -lz
 
 CXX=g++
-OPT=-O2 -g
+OPT=-O2 -fPIC
 INCLUDE=-I. -Icore -I$(EXRINCLUDE)
 WARN=-Wall
 CWD=$(shell pwd)
@@ -42,16 +42,18 @@ LD=$(CXX) $(OPT)
 ACCELERATORS = grid kdtree
 CAMERAS      = environment orthographic perspective
 CORE         = api camera color dynload exrio film geometry light material mc \
-               paramset parser primitive reflection sampling scene shape \
-               texture timer transform transport util volume pbrtparse pbrtlex
-FILM         = image
+               paramset parser primitive reflection  sampling scene shape \
+               texture timer transform transport util volume pbrtparse pbrtlex \
+               
+FILM         = image_raw
 FILTERS      = box gaussian mitchell sinc triangle
 INTEGRATORS  = directlighting emission irradiancecache \
                path photonmap single whitted igi debug exphotonmap
 LIGHTS       = area distant goniometric infinite point projection spot infinitesample
 MATERIALS    = bluepaint brushedmetal clay felt \
                glass matte mirror plastic primer \
-               shinymetal skin substrate translucent uber
+               shinymetal skin substrate translucent uber \
+               custom_material_ward
 SAMPLERS     = bestcandidate lowdiscrepancy random stratified
 SHAPES       = cone cylinder disk heightfield hyperboloid loopsubdiv nurbs \
                paraboloid sphere trianglemesh
@@ -98,9 +100,10 @@ RENDERER_BINARY = bin/pbrt
 
 CORE_HEADERFILES = api.h camera.h color.h dynload.h film.h geometry.h \
                   kdtree.h light.h pbrt.h material.h mc.h mipmap.h octree.h \
-                  paramset.h primitive.h reflection.h sampling.h scene.h \
-                  shape.h texture.h timer.h tonemap.h transform.h transport.h \
-                  volume.h 
+                  paramset.h primitive.h reflection.h  \
+                  sampling.h scene.h shape.h texture.h timer.h tonemap.h \
+                  transform.h transport.h volume.h 
+                  
 
 CORE_HEADERS := $(addprefix core/, $(CORE_HEADERFILES) )
 

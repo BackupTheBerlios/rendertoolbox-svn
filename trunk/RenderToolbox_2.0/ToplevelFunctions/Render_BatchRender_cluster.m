@@ -32,8 +32,16 @@ logDirectory='logs';
 
 %read from conditions file
 sceneConditions=Parameters_ReadStructsFromTabText('conditions.txt');
-isRadiance=strcmp(sceneConditions.renderer,'radiance');
 numConditions=length(sceneConditions);
+
+%see if any of the conditions use radiance, if so, we'll require some
+%extra fields, even though pbrt conditions won't use them
+isRadiance=false;
+for currentCondition=1:numConditions
+	if strcmp(sceneConditions(currentCondition).renderer,'radiance');
+		isRadiance=true;
+	end
+end
 
 %check to make sure we have required fields in conditions file
 requirements={'sceneName','renderer','imageRes','wavelengthsStart','wavelengthsStep', ...
@@ -149,36 +157,35 @@ end
 
 %render the scene
 for currentConditionNumber=1:numConditions
-        display(['**Current condition: ' sceneConditions(currentConditionNumber).sceneName ...
-            ', ' datestr(now)]);
+	sceneName=sceneConditions(currentConditionNumber).sceneName;
+	display(['**Current condition: ' sceneName ', ' datestr(now)]);
 
-        %process image properties
-        [objectMaterialParams lightMaterialParams currentConditions] = ...
-            Render_ProcessMaterialProps(objectProperties,lightProperties,sceneConditions(currentConditionNumber));
-        
-        %see if conditions and parameters have already been saved
+	%process image properties
+	[objectMaterialParams lightMaterialParams currentConditions] = ...
+		Render_ProcessMaterialProps(objectProperties,lightProperties,sceneConditions(currentConditionNumber));
+	
+	%see if conditions and parameters have already been saved
 %         fileNamePath=[temporaryDirectory '/' logDirectory '/conditionsAndParameters_' ...
 %             num2str(currentConditionNumber) '.mat'];
-        
-        
-     
-        
-        switch(sceneConditions(currentConditionNumber).renderer)
-            case 'radiance'
-                Render_RenderRadiance(currentConditions,objectMaterialParams,lightMaterialParams,rendererParams);
-            case 'pbrt'
-                doImageProcess=Render_RenderPBRT(currentConditions,objectMaterialParams,lightMaterialParams);
-            otherwise
-                error('Only the radiance and pbrt renderers are currently supported.');
-        end
-        
-        %now take output of rendering and process into a monitor image
-        if doImageProcess
-        	display('generating monitor images...');
-        	Render_ProcessImage(currentConditions);
-        	unix(['rm ' temporaryDirectory '/image_processing.loc']);
-        end
-        
-        display(['Finished at ' datestr(now)]);
-        display(' ');
+	
+	
+ 
+	
+	switch(sceneConditions(currentConditionNumber).renderer)
+		case 'radiance'
+			doImageProcess=Render_RenderRadiance(currentConditions,objectMaterialParams,lightMaterialParams,rendererParams);
+		case 'pbrt'
+			doImageProcess=Render_RenderPBRT(currentConditions,objectMaterialParams,lightMaterialParams);
+		otherwise
+			error('Only the radiance and pbrt renderers are currently supported.');
+	end
+	
+	%now take output of rendering and process into a monitor image
+	if doImageProcess
+		display('generating cone and monitor images...');
+		Render_ProcessImage(currentConditions);
+	end
+	
+	display(['Finished at ' datestr(now)]);
+	display(' ');
 end

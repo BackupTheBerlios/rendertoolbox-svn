@@ -42,16 +42,16 @@ LD=$(CXX) $(OPT)
 ACCELERATORS = kdtree
 CAMERAS      = perspective
 CORE         = api camera color dynload exrio film geometry light material mc \
-               paramset parser primitive reflection sampling scene shape \
+               paramset parser primitive reflection reflection_custom sampling scene shape \
                texture timer transform transport util volume pbrtparse pbrtlex
-FILM         = image image_raw
-FILTERS      = mitchell
-INTEGRATORS  = directlighting emission
-LIGHTS       = distant
-MATERIALS    = matte
-SAMPLERS     = bestcandidate
-SHAPES       = sphere
-TEXTURES     = 
+FILM         = image_raw
+FILTERS      = mitchell gaussian
+INTEGRATORS  = directlighting emission irradiancecache photonmap path
+LIGHTS       = distant spot point
+MATERIALS    = matte plastic custom_material_ward
+SAMPLERS     = bestcandidate lowdiscrepancy
+SHAPES       = sphere trianglemesh
+TEXTURES     = constant
 TONEMAPS     = 
 VOLUMES      = 
 
@@ -93,7 +93,7 @@ RENDERER_BINARY = bin/pbrt
 
 CORE_HEADERFILES = api.h camera.h color.h dynload.h film.h geometry.h \
                   kdtree.h light.h pbrt.h material.h mc.h mipmap.h octree.h \
-                  paramset.h primitive.h reflection.h sampling.h scene.h \
+                  paramset.h primitive.h reflection.h reflection_custom.h sampling.h scene.h \
                   shape.h texture.h timer.h tonemap.h transform.h transport.h \
                   volume.h 
 

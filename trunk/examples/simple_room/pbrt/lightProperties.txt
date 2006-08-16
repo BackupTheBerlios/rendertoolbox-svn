@@ -1,0 +1,2 @@
+lightName	spectrumType	lightType	
+spotlight	D65	point

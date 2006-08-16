@@ -14,8 +14,8 @@ wls=currentConditions.wls;
 imageDirectory=currentConditions.imageDirectory;
 
 %load and then delete everything in the directory
-load([imageDirectory '/picMat.mat']);
-unix(['rm -rf ' imageDirectory '/*']);
+load([imageDirectory '/picMat_' sceneName '.mat']);
+unix(['rm -rf ' imageDirectory '/*' sceneName '*']);
 
 % Define camera and read it.
 camera.manufacturer = 'n/a';

@@ -11,6 +11,7 @@ imageDirectory=currentConditions.imageDirectory;
 wavelengths=currentConditions.wls;
 rif_name=currentConditions.sceneName;
 currentConditionNumber=currentConditions.currentConditionNumber;
+sceneName=currentConditions.sceneName;
 
 %check to make sure there is the image directory
 if (~exist(imageDirectory,'dir') )
@@ -21,13 +22,17 @@ end
 radianceOutDirName=['radOutput_' int2str(currentConditionNumber)];
 radianceOutDirPath=[temporaryDirectory '/' radianceOutDirName];
 
-
-%most of the rest is bei's code:
-
 % Get the length of the wavelengths
-lim = length(wavelengths);
-picMat = cell(1,lim);
-for i = 1:lim
+numberOfWavelengths = length(wavelengths);
+picMat = cell(1,numberOfWavelengths);
+for i = 1:numberOfWavelengths
+	currentWavelength=wavelengths(i);
+	lockFileNamePath=[temporaryDirectory '/' sceneName '_' ...
+		num2str(currentWavelength) 'Finished.loc'];
+		
+	%make sure this wavelength is finished, if not, wait
+	Render_WaitForFile(lockFileNamePath);
+
      % Define file name and create a text version of the data in the pic
      % file.
      S = ['pvalue -h ',radianceOutDirPath,'/',rif_name,'_',int2str(wavelengths(i)),'_1.pic' '>' radianceOutDirPath,'/',rif_name,'_',int2str(wavelengths(i)),'_1.txt'];
@@ -61,4 +66,4 @@ for i = 1:lim
 end
 
 %save picMat
-eval(['save ' imageDirectory '/picMat.mat picMat']); 
+eval(['save ' imageDirectory '/picMat_' sceneName '.mat picMat']); 

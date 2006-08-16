@@ -5,6 +5,7 @@ wavelengths=currentConditions.wls;
 resolution=currentConditions.imageRes;
 numWavelengths=length(wavelengths);
 imageDirectory=currentConditions.imageDirectory;
+sceneName=currentConditions.sceneName;
 
 temporaryDirectory=currentConditions.temporaryDirectory;
 pbrtOutputDirectory=currentConditions.pbrtOutputDirectory;
@@ -36,11 +37,13 @@ if ~exist(fileNamePath,'file')
         f=fopen(loadFileNamePath,'r');
         temp=fread(f,'float32');
         imageData=reshape(temp,resolution,resolution);
+        %rotate the image to orient it correctly
         imageData=rot90(imageData,-1);
+        imageData=fliplr(imageData);
         fclose(f);
         picMat{currentWavelength}=imageData;
     end
 
-    cmd=['save ' imageDirectory '/picMat.mat picMat'];
+    cmd=['save ' imageDirectory '/picMat_' sceneName '.mat picMat'];
     eval(cmd);
 end

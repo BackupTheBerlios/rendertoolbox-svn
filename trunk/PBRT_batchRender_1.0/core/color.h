@@ -143,15 +143,17 @@ public:
 			fprintf(f, "%f ", c[i]);
 	}
 	
-//(dpl) take out xyz because we will do this processing in matlab
-// 	void XYZ(float xyz[3]) const {
-// 		xyz[0] = xyz[1] = xyz[2] = 0.;
-// 		for (int i = 0; i < COLOR_SAMPLES; ++i) {
-// 			xyz[0] += XWeight[i] * c[i];
-// 			xyz[1] += YWeight[i] * c[i];
-// 			xyz[2] += ZWeight[i] * c[i];
-// 		}
-// 	}
+	
+//assume that COLOR_SAMPLES=1
+//  	void XYZ(float xyz[3]) const {
+//  		xyz[0] = xyz[1] = xyz[2] = 0.;
+//  		for (int i = 0; i < COLOR_SAMPLES; ++i) {
+//  			xyz[0] += XWeight[i] * c[i];
+//  			xyz[1] += YWeight[i] * c[i];
+//  			xyz[2] += ZWeight[i] * c[i];
+//  		}
+//  	}
+
 	float y() const {
 		float v = 0.;
 		for (int i = 0; i < COLOR_SAMPLES; ++i)

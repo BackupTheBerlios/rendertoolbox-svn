@@ -42,8 +42,10 @@ for currentLight=1:numLights
             Render_WriteRadMaterial_Area(lightMaterialParams(currentLight),dirName);
         case 'spot'
             Render_WriteRadMaterial_Spot(lightMaterialParams(currentLight),dirName);
+        case 'point'
+            Render_WriteRadMaterial_Point(lightMaterialParams(currentLight),dirName);
         otherwise
-            error('unsupported light type. only support area and spot for right now.');
+            error('unsupported light type. only support area, spot and point lights for right now.');
     end
 end
 

@@ -1,2 +1,0 @@
-lightName	spectrumType	lightType	conewidth	xdirection	ydirection	zdirection
-spotlight	D65	spot	30	-55.248	-34.224	-1.647
