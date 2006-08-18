@@ -1,7 +1,7 @@
 function Render_WriteRadMaterial_Point(currentLightMaterialParams,dirName)
 %Render_Render_WriteRadMaterial_Point(currentLightMaterialParams,dirName)
 
-lightPower=1e8;
+lightPower=1e11;
 
 numWavelengths=length(currentLightMaterialParams.wavelength);
 
