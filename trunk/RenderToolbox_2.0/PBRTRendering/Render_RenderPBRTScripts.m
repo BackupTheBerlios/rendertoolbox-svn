@@ -39,7 +39,8 @@ for currentWavelength=1:numWavelengths
     	end
     	%now carry on    	
         cmd=['pbrt ' saveFileNamePath ' ' loadFileNamePath];
-        [status result]=unix(cmd);
+        %[status result]=unix(cmd);
+		unix(cmd);
         fprintf('done.\n');
         unix(['rm ' lockFileNamePath]);
     else
