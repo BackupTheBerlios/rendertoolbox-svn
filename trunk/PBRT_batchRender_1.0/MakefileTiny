@@ -44,7 +44,7 @@ CAMERAS      =
 CORE         = api camera color dynload exrio film geometry light material mc \
                paramset parser primitive reflection sampling scene shape \
                texture timer transform transport util volume pbrtparse pbrtlex
-FILM         = image
+FILM         = image_raw
 FILTERS      = 
 INTEGRATORS  = 
 LIGHTS       = distant
