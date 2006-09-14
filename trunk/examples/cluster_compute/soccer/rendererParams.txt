@@ -1,1 +1,0 @@
-zone	exposure	z	quality	penumbras	indirect	detail	variability	report	renderInterior 0 40.1 0 25.5 0 19.4	1	Z	Medium	True	2	Medium	Medium	0.2	-dj 0.6 -dt 0.01 -dr 3 -ds 0.1 -sj 0.7 -st 0.15 -dc 0.5 -lr 1 -aw 0 -av 0.5 0.5 0.5
