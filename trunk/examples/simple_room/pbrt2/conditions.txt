@@ -1,3 +1,0 @@
-sceneName	renderer	imageRes	wavelengthsStart	wavelengthsStep	wavelengthsNumSteps	viewFile	humanCones	tonemap	calibrationFile	lightPower
-con_pbrt	pbrt	400	400	1	1	view_file	ss2	1	StereoLeft_8	7
-
